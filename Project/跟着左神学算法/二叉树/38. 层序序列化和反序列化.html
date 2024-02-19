@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val) {
+       *     this.val = val;
+       *     this.left = this.right = null;
+       * }
+       */
+
+      /**
+       * Encodes a tree to a single string.
+       *
+       * @param {TreeNode} root
+       * @return {string}
+       */
+      var serialize = function (root) {
+        if (root == null) return "";
+        let quene = [];
+        quene.push(root);
+        let stringBuilder = "";
+        stringBuilder += `${root.val},`;
+        while (quene.length > 0) {
+          let curr = quene.shift();
+
+          if (curr.left !== null) {
+            quene.push(curr.left);
+            stringBuilder += `${curr.left.val},`;
+          } else {
+            stringBuilder += `#,`;
+          }
+
+          if (curr.right !== null) {
+            quene.push(curr.right);
+            stringBuilder += `${curr.right.val},`;
+          } else {
+            stringBuilder += `#,`;
+          }
+        }
+
+        return stringBuilder;
+      };
+
+      /**
+       * Decodes your encoded data to tree.
+       *
+       * @param {string} data
+       * @return {TreeNode}
+       */
+      var deserialize = function (data) {
+        if (data == "") return null;
+        /* items中存放的是字符串 */
+        let items = data.split(",");
+
+        /* quene中存放的是产生出来的节点 */
+        let quene = [];
+
+        let currIndex = 0;
+
+        let root = generate(items[currIndex++]);
+        quene.push(root);
+
+        while (quene.length !== 0) {
+          let curr = quene.shift();
+          curr.left = generate(items[currIndex++]);
+          curr.right = generate(items[currIndex++]);
+
+          if (curr.left !== null) {
+            quene.push(curr.left);
+          }
+
+          if (curr.right !== null) {
+            quene.push(curr.right);
+          }
+        }
+
+        return head;
+      };
+
+      function generate(val) {
+        return val === "#" ? null : new TreeNode(parseInt(val));
+      }
+
+      /**
+       * Your functions will be called as such:
+       * deserialize(serialize(root));
+       */
+    </script>
+  </body>
+</html>

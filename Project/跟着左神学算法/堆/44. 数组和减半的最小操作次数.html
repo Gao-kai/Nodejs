@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+         方法一：不一定要做的搞一个Heap类 很多时候用数组模拟堆完全够用了
+        比如数组排序和这个很类似
+        堆是我们大脑中想想的具有特殊功能的结构
+        数组是程序中真实的变量
+        但是必须要一个heapify方法 用于调整任意一个子数为大顶堆或小顶堆
+      **/
+
+      /**
+       * @param {number[]} nums
+       * @return {number}
+       */
+      var halveArray = function (nums) {
+        let sum = 0;
+        let n = nums.length;
+        for (let i = n - 1; i >= 0; i--) {
+          sum += nums[i];
+          //   从底到顶部建堆 On
+          heapify(nums, i, n);
+        }
+
+        let halfSum = sum / 2;
+        let ans = 0;
+        while (sum > halfSum) {
+          // 取出最大的 每次就要从最大的砍
+          // 将值减少一半
+          let half = nums[0] / 2;
+
+          // 操作次数+1
+          ans++;
+
+          // 无论从那个值减半 都是从总和中减的
+          sum -= half;
+
+          // 从顶开始调整 很关键的一步  如果没有真的向堆中inster的操作 这里就需要原地修改堆顶元素 然后调整
+          nums[0] = half;
+          heapify(nums, 0, n);
+        }
+
+        return ans;
+      };
+
+      function heapify(nums, i, size) {
+        // 向下过滤
+        let left = 2 * i + 1;
+        while (left < size) {
+          let right = 2 * i + 2;
+          let best = right < size && nums[right] > nums[left] ? right : left;
+          best = nums[i] >= nums[best] ? i : best;
+          if (best == i) break;
+          swap(nums, i, best);
+          i = best;
+          left = 2 * i + 1;
+        }
+      }
+
+      console.log(halveArray([5, 19, 8, 1]));
+    </script>
+
+    <script>
+      //  自己实现一个大顶堆
+      // this.queen[currIndex] - this.queen[parentIndex]
+      // 1. 用户写 <0 说明儿子是小于父亲的 这符合大顶堆的性质
+      // 2. 用户写 >0 说明儿子是大于父亲的  这不符合大顶堆性质 因此需要进行父子交换
+
+      // 同理 如果是小顶堆的话 这里还是这样一句代码 但是比较器是a-b
+      // this.queen[parentIndex] - this.queen[currIndex]
+      // 1. 用户写 <0 说明父亲小于儿子 这符合小顶堆的性质
+      // 2. 用户写 >0 说明父亲大于儿子  这不符合小顶堆性质 因此需要进行父子交换
+
+      // 所以 大小顶堆我们只需要在外部调整比较器 内部代码实现稳定
+
+      class Heap {
+        constructor(compare) {
+          this.compare = compare;
+          this.queen = [];
+          this.size = 0;
+        }
+
+        peek() {
+          return this.queen[0];
+        }
+
+        add(val) {
+          this.queen.push(val);
+          this.size++;
+          let currIndex = this.size - 1;
+          let parentIndex = Math.floor((currIndex - 1) >> 1);
+          while (
+            parentIndex >= 0 &&
+            this.compare(this.queen[parentIndex], this.queen[currIndex]) > 0
+          ) {
+            swap(this.queen, parentIndex, currIndex);
+            currIndex = parentIndex;
+            parentIndex = Math.floor((currIndex - 1) >> 1);
+          }
+        }
+
+        remove() {
+          if (this.size == 0) return;
+          swap(this.queen, 0, this.size - 1);
+          this.size--;
+          let top = this.queen.pop();
+          let curr = 0;
+          let left = 1;
+          while (left < this.size) {
+            let right = left + 1;
+            let best =
+              right < this.size &&
+              this.compare(this.queen[left], this.queen[right]) > 0
+                ? right
+                : left;
+            best =
+              this.compare(this.queen[curr], this.queen[best]) > 0
+                ? best
+                : curr;
+            if (best == curr) break;
+            swap(this.queen, best, curr);
+            curr = best;
+            left = 2 * curr + 1;
+          }
+
+          return top;
+        }
+      }
+
+      function swap(nums, i, j) {
+        [nums[i], nums[j]] = [nums[j], nums[i]];
+      }
+
+      /**
+       * @param {number[]} nums
+       * @return {number}
+       */
+      var halveArray = function (nums) {
+        let sum = 0;
+        for (const num of nums) {
+          sum += num;
+        }
+        let halfSum = sum / 2;
+        let maxHeap = new Heap((a, b) => b - a);
+        for (const num of nums) {
+          // 构建一个大顶堆 可以从后向前构造 也可以从前向后构造
+          maxHeap.add(num);
+        }
+
+        let ans = 0;
+        while (sum > halfSum) {
+          // 取出最大的 每次就要从最大的砍
+          let top = maxHeap.remove();
+          // 将值减少一半
+          let half = top / 2;
+          // 操作次数+1
+          ans++;
+          // 无论从那个值减半 都是从总和中减的
+          sum -= half;
+          // 将减半后的数字重新入堆
+          maxHeap.add(half);
+        }
+
+        return ans;
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+$namespace: "g"; /* 修饰命名空间 */
+$state-prefix: "is-"; /* 修饰状态 */
+$modifier-separator: "--"; /* 修饰类型的 */
+$element-separator: "__"; /* 划分空间分隔符 */
+
+$--color-primary: #409eff;
+$--color-white: #ffffff;
+$--color-black: #000000;
+$--color-success: #67c23a;
+$--color-warning: #e6a23c;
+$--color-danger: #f56c6c;
+$--color-info: #909399;

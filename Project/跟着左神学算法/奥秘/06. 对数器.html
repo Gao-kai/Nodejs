@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 对数器 -->
+    <script>
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+
+      function bubbleSort(array) {
+        if (array.length < 2) return array;
+
+        for (let i = 0; i < array.length - 1; i++) {
+          for (let j = 0; j < array.length - i - 1; j++) {
+            if (array[j] > array[j + 1]) {
+              swap(array, j, j + 1);
+            }
+          }
+        }
+        return array;
+      }
+
+      function insertSort(array) {
+        if (array.length < 2) return array;
+
+        for (let i = 1; i < array.length; i++) {
+          /* 
+            每一轮都保证让0-j上有序即可
+            0-1上有序
+            0-2上有序
+            0-4上有序 那不就是排好了
+            0-i区间上已经有序
+          */
+          for (let j = i; j > 0; j--) {
+            if (array[j] < array[j - 1]) {
+              swap(array, j, j - 1);
+            }
+          }
+        }
+
+        return array;
+      }
+
+      function selectionSort(arr) {
+        if (arr.length < 2) return arr;
+        for (let i = 0; i < arr.length - 1; i++) {
+          let minIndex = i;
+          for (let j = i; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+              minIndex = j;
+            }
+          }
+          swap(arr, i, minIndex);
+        }
+
+        return arr;
+      }
+
+      /* 
+        对数器的实现思路
+        1. 对于相同题目的不同思路，比如一个暴力一个优雅
+        2. 自己控制测试数据的长度和范围
+        3. 对不同思路进行测试，找到报错的用例
+        4. 将用例反向带入到原来的代码中运行
+        5. 有错误用例找bug 要比光看强的多也高效的多
+      */
+      function validator(maxLen, maxValue, minValue) {
+        const times = 1000;
+        console.log("测试开始");
+        for (let i = 0; i < times; i++) {
+          const randomArr = getRandomArray(maxLen, minValue, maxValue);
+          const copyArr1 = [...randomArr];
+          const copyArr2 = [...randomArr];
+          const copyArr3 = [...randomArr];
+
+          bubbleSort(copyArr1);
+          insertSort(copyArr2);
+          selectionSort(copyArr3);
+
+          if (
+            !isSameArray(copyArr1, copyArr2) ||
+            !isSameArray(copyArr1, copyArr3)
+          ) {
+            console.log("程序报错");
+            console.log("当前报错的测试用例为：", randomArr);
+            console.log("copyArr1", copyArr1);
+            console.log("copyArr2", copyArr2);
+            console.log("copyArr3", copyArr3);
+            return;
+          }
+        }
+
+        console.log("恭喜你，通过全部测试用例！");
+      }
+
+      function isSameArray(arr1, arr2) {
+        for (let i = 0; i < arr1.length; i++) {
+          if (arr1[i] !== arr2[i]) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      function getRandomArray(n, min, max) {
+        let arr = [];
+        for (let i = 0; i < n; i++) {
+          arr[i] = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        return arr;
+      }
+
+      validator(10, 1, 100);
+    </script>
+  </body>
+</html>

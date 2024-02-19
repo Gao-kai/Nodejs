@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@gg-vue/reactivity测试页面</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./dist/reactivity.global.js"></script>
+    <!-- <script src="../../node_modules/@vue/reactivity/dist//reactivity.global.js"></script> -->
+    <script>
+      const {
+        effect,
+        ref,
+        // shallowRef,
+        reactive,
+        // shallowReactive,
+        // readonly,
+        // shallowReadonly,
+        computed,
+      } = GGVueReactivity;
+
+      console.log({ GGVueReactivity });
+
+      const person = reactive({
+        name: "lilei",
+        age: 18,
+        address: {
+          provice: "甘肃",
+        },
+      });
+
+      const counter = ref(0);
+
+      effect(() => {
+        console.log(counter.value);
+      });
+
+      setTimeout(() => {
+        counter.value++;
+      }, 1000);
+
+      // const myAge = computed({
+      //   get() {
+      //     return person.age + 18;
+      //   },
+      //   set(value) {
+      //     console.log("computed set", value);
+      //   },
+      // });
+
+      // effect(() => {
+      //   console.log(myAge.value);
+      //   console.log(myAge.value);
+      //   console.log(myAge.value);
+      // });
+
+      // setTimeout(() => {
+      //   person.age = 20;
+      // }, 1000);
+
+      const runner = effect(() => {
+        console.log("effect副作用函数执行一次");
+        app.innerHTML = `姓名：${person.name};年龄:${person.age};省份：${person.address.provice}`;
+      });
+
+      setTimeout(() => {
+        console.log("修改值");
+        person.age = 19;
+        person.address.provice = "四川";
+      }, 1000);
+      // runner(); // forceUpdate
+      // runner.effect.stop(); // cleanUp
+    </script>
+  </body>
+</html>

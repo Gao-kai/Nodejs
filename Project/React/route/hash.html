@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hash路由</title>
+  </head>
+  <body>
+    <div class="nav-header">
+      <a href="#/">首页</a>
+      <a href="#/about">关于</a>
+      <a href="#/personal">个人中心</a>
+    </div>
+
+    <div class="router-view"></div>
+    <script>
+      const routerView = document.querySelector(".router-view");
+
+      const routes = [
+        {
+          path: "/",
+          component: "这是首页要渲染的内容",
+        },
+        {
+          path: "/about",
+          component: "这是关于要渲染的内容",
+        },
+        {
+          path: "/personal",
+          component: "这是个人中心要渲染的内容",
+        },
+      ];
+
+      const routerMatch = () => {
+        const hash = location.hash.substring(1);
+
+        let matched = routes.find((route) => {
+          return route.path === hash;
+        });
+
+        if (matched) {
+          routerView.innerHTML = matched.component;
+        }
+      };
+
+      location.hash = "#/";
+      routerMatch();
+
+      window.onhashchange = routerMatch;
+    </script>
+  </body>
+</html>

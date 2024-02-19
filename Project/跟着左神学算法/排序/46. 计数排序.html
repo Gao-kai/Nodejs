@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function format(arr, min) {
+        // 每一个数字减去最小值 得到一个最小也是0的非负数组成的数组
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] -= min;
+        }
+        return arr;
+      }
+
+      /* 
+            计数排序的前提是排序数组的范围有限此时就可以
+            假设只排序前100个数字
+        */
+      function sortArray(arr) {
+        // 先找到最小值
+        let min = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+          min = Math.min(arr[i], min);
+        }
+
+        // 小技巧：因为数组没有负数的索引 所以先保证数组中不能有负数
+        arr = format(arr, min);
+
+        // 记录每一个数出现的频次 索引位是值
+        let help = [];
+        for (const item of arr) {
+          help[item] = help[item] ? ++help[item] : 1;
+        }
+
+        let ans = [];
+        // 数组的索引一定是从0*-xx递增的 所以从头开始遍历 意味着值就是从小到大的
+        for (let i = 0; i < help.length; i++) {
+          while (help[i] > 0) {
+            ans.push(i);
+            help[i]--;
+          }
+        }
+
+        // 前面格式化了 这里要还原回去
+        for (let i = 0; i < ans.length; i++) {
+          ans[i] += min;
+        }
+        return ans;
+      }
+
+      console.log(sprtArray([-10, 3, 1, -5, 1, 99, 5, 3, -100]));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="../image-10.png" alt="" />
+    <script>
+      /**
+       * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+       *
+       *
+       * @param nums int整型一维数组
+       * @return long长整型
+       */
+      function calArray(nums) {
+        let l = 0;
+        let r = nums.length - 1;
+        // 求l-r区间上数组的小和
+        return mergeSort(nums, l, r);
+      }
+
+      function mergeSort(nums, l, r) {
+        if (l == r) return 0;
+        let m = l + ((r - l) >> 1);
+        let num1 = mergeSort(nums, l, m);
+        let num2 = mergeSort(nums, m + 1, r);
+        return num1 + num2 + merge(nums, l, m, r);
+      }
+      let help = [];
+      function merge(nums, l, mid, r) {
+        // 先计算答案
+        let ans = 0;
+        let sum = 0;
+        for (let i = l, j = mid + 1; j <= r; j++) {
+          while (i <= mid && nums[i] <= nums[j]) {
+            sum += nums[i];
+            i++;
+          }
+          ans += sum;
+        }
+        // 让左右两边变为有序数组
+        let a = l;
+        let b = mid + 1;
+        let index = l;
+
+        while (a <= mid && b <= r) {
+          if (nums[a] <= nums[b]) {
+            help[index++] = nums[a++];
+          } else {
+            help[index++] = nums[b++];
+          }
+        }
+
+        while (a <= mid) {
+          help[index++] = nums[a++];
+        }
+
+        while (b <= r) {
+          help[index++] = nums[b++];
+        }
+
+        for (let i = l; i <= r; i++) {
+          nums[i] = help[i];
+        }
+
+        return ans;
+      }
+
+      module.exports = {
+        calArray: calArray,
+      };
+    </script>
+  </body>
+</html>

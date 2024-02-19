@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+        1. 中序遍历无法实现序列化和反序列化
+        2. 因为比如
+
+          1    2
+         /      \
+        2        1
+        中序序列化的结果都是 #2#1#
+        相同的序列化结果无法反序列化回唯一的一颗树
+
+     -->
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val) {
+       *     this.val = val;
+       *     this.left = this.right = null;
+       * }
+       */
+
+      /**
+       * Encodes a tree to a single string.
+       *
+       * @param {TreeNode} root
+       * @return {string}
+       */
+      var serialize = function (root) {
+        let stringBuilder = new String("");
+        traverse(root, stringBuilder);
+        return stringBuilder.toString();
+      };
+
+      function traverse(root, stringBuilder) {
+        if (root == null) {
+          stringBuilder += "#,";
+        } else {
+          stringBuilder += `${root.val},`;
+          traverse(root.left, stringBuilder);
+          traverse(root.right, stringBuilder);
+        }
+      }
+
+      /**
+       * Decodes your encoded data to tree.
+       *
+       * @param {string} data
+       * @return {TreeNode}
+       */
+      var deserialize = function (data) {
+        if (data === "") return null;
+        let items = data.join(",");
+        let currIndex = 0;
+        return generate(items, currIndex);
+      };
+
+      function generate(items, currIndex) {
+        let curr = items[currIndex];
+        currIndex++;
+        if (curr === "#") {
+          return null;
+        } else {
+          let head = new TreeNode(parseInt(curr));
+          head.left = generate(items, currIndex);
+          head.right = generate(items, currIndex);
+        }
+        return head;
+      }
+      /**
+       * Your functions will be called as such:
+       * deserialize(serialize(root));
+       */
+    </script>
+  </body>
+</html>

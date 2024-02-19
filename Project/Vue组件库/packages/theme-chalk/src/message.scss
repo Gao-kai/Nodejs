@@ -1,0 +1,61 @@
+@import "./common/mixin.scss";
+@import "./common/var.scss";
+
+$--message-color-info: #909399;
+$--message-color-success: #67c23a;
+$--message-color-warning: #e6a23c;
+$--message-color-error: #f56c6c;
+
+@include b(message) {
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  position: fixed;
+  height: 40px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+  min-width: 300px;
+  border-radius: 5px;
+  border: 1px solid #e9e9eb;
+  background: #f4f4f5;
+  transition: opacity 0.3s, transfrom 0.4s, top 0.4s;
+  display: flex;
+  align-items: center;
+
+  @include m(info) {
+    background: rgba($color: $--message-color-info, $alpha: 0.5);
+    color: $--message-color-info;
+    border-color: rgba($color: $--message-color-info, $alpha: 0.2);
+  }
+
+  @include m(success) {
+    background: rgba($color: $--message-color-success, $alpha: 0.5);
+    color: $--message-color-success;
+    border-color: rgba($color: $--message-color-success, $alpha: 0.2);
+  }
+
+  @include m(warning) {
+    background: rgba($color: $--message-color-warning, $alpha: 0.5);
+    color: $--message-color-warning;
+    border-color: rgba($color: $--message-color-warning, $alpha: 0.2);
+  }
+
+  @include m(error) {
+    background: rgba($color: $--message-color-error, $alpha: 0.5);
+    color: $--message-color-error;
+    border-color: rgba($color: $--message-color-error, $alpha: 0.2);
+  }
+
+  @include when(center) {
+    justify-content: center;
+  }
+}
+
+.g-message-fade-enter-from,
+.g-message-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50% -100%);
+  top: 0;
+}

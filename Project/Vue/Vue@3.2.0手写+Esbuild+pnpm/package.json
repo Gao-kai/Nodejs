@@ -1,0 +1,27 @@
+{
+  "name": "vue3-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./scripts/dev.js -p reactivity -f global"
+  },
+  "keywords": [
+    "Vue3 Core",
+    "pnpm",
+    "Reactivity",
+    "Dom Diff"
+  ],
+  "author": "Kelinlawu",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "4.6.2",
+    "vue": "3.2.31",
+    "esbuild": "0.14.27",
+    "minimist": "1.2.5"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
+  }
+}

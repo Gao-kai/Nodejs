@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 常规解法 需要多一个辅助空间arr -->
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val, left, right) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.left = (left===undefined ? null : left)
+       *     this.right = (right===undefined ? null : right)
+       * }
+       */
+      /**
+       * @param {TreeNode} root
+       * @return {number[][]}
+       */
+      var levelOrder = function (root) {
+        if (root == null) return [];
+
+        let res = [];
+        let quene = [];
+        quene.push(root);
+
+        while (quene.length !== 0) {
+          let len = quene.length;
+          let currLevelNodes = [];
+          for (let i = 0; i < len; i++) {
+            const top = quene.shift();
+            currLevelNodes.push(top.val);
+            if (top.left) {
+              quene.push(top.left);
+            }
+            if (top.right) {
+              quene.push(top.right);
+            }
+          }
+          res.push(currLevelNodes);
+        }
+
+        return res;
+      };
+    </script>
+
+    <!-- 索引赋值法 不使用push shift等方法 -->
+    <script>
+      var levelOrder = function (root) {
+        if (root == null) return [];
+        let left = 0;
+        let right = 0;
+        let ans = [];
+        let quene = [];
+        quene[right++] = root;
+
+        while (right - left > 0) {
+          let levels = [];
+          // 每层需要遍历的次数
+          let size = right - left;
+
+          for (let i = 0; i < size; i++) {
+            // left指针指向的就是队列头部的元素 取出之后left前进一位
+            let curr = quene[left++];
+            // 收集这一层的元素
+            levels.push(curr.val);
+
+            if (curr.left !== null) {
+              // right指向的就是队列尾部的位置 每次存入一个元素前进一位 代表下一次新元素进来的位置
+              quene[right++] = curr.left;
+            }
+
+            if (curr.right !== null) {
+              quene[right++] = curr.right;
+            }
+          }
+
+          // 收集完成 记入ans
+          ans.push(levels);
+        }
+
+        return ans;
+      };
+    </script>
+  </body>
+</html>

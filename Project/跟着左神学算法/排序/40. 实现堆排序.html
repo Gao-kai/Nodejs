@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number[]} nums
+       * @return {number[]}
+       * 堆排序
+       */
+      var sortArray = function (nums) {
+        let size = nums.length;
+        // 首先让数组中的元素变为一个大顶堆
+        for (let i = nums.length - 1; i >= 0; i--) {
+          heapify(nums, i, size);
+        }
+
+        // 全部变成大顶堆后 此时并没有排好序 我们再来一次自下到上的跳转
+        // 不断的将首尾交换 最大的交换到后面 然后size--
+        // 通过size来修改值的范围
+
+        while (size > 1) {
+          swap(nums, 0, size - 1);
+          size--;
+          heapify(nums, 0, size);
+        }
+
+        return nums;
+      };
+
+      function heapify(nums, i, size) {
+        // 向下过滤
+        let left = 2 * i + 1;
+        while (left < size) {
+          let right = 2 * i + 2;
+          let best = right < size && nums[right] > nums[left] ? right : left;
+          best = nums[i] >= nums[best] ? i : best;
+          if (best == i) break;
+          swap(nums, i, best);
+          i = best;
+          left = 2 * i + 1;
+        }
+      }
+
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+    </script>
+  </body>
+</html>

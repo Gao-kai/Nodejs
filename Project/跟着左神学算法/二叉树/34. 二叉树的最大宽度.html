@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val, left, right) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.left = (left===undefined ? null : left)
+       *     this.right = (right===undefined ? null : right)
+       * }
+       */
+      /**
+       * @param {TreeNode} root
+       * @return {number}
+       */
+      var widthOfBinaryTree = function (root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return 1;
+        let quene = [];
+        let nodeOrders = [];
+        // 当树节点层数超出53层之后 第54层的最左侧的节点就是 2 * 2的53次方就会超出边界 所以这里用bigint实现
+        // Math.max
+        let ans = BigInt(0);
+
+        let left = 0;
+        let right = 0;
+
+        quene[right] = root;
+        nodeOrders[right] = 1n;
+        right++;
+
+        while (left < right) {
+          let size = right - left;
+          ans =
+            ans > nodeOrders[right - 1] - nodeOrders[left] + BigInt(1)
+              ? ans
+              : nodeOrders[right - 1] - nodeOrders[left] + BigInt(1);
+
+          for (let i = 0; i < size; i++) {
+            let curr = quene[left];
+            let order = nodeOrders[left];
+            left++;
+
+            if (curr.left != null) {
+              quene[right] = curr.left;
+              nodeOrders[right] = BigInt(2n * order);
+              right++;
+            }
+
+            if (curr.right != null) {
+              quene[right] = curr.right;
+              nodeOrders[right] = BigInt(2n * order + 1n);
+              right++;
+            }
+          }
+        }
+
+        return ans;
+      };
+    </script>
+  </body>
+</html>

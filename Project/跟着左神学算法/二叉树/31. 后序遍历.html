@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {TreeNode} root
+       * @return {number[]}
+       *
+       * 后序是左右中
+       * 那么我只要模拟一个栈：记录中右左的存放顺序
+       * 最后在弹出的时候不就是左右中吗？
+       *
+       * 问题是这个辅助栈咋实现？
+       * 另外一个栈弹出一次我就压入一次
+       * 中
+       * 右
+       * 左 的顺序弹出 我存放的顺序不急于是中右左吗？
+       *
+       * 思路来了：中的一定先放入先弹出 后续先放左的 后放右的 最后弹出顺序就是右左的
+       */
+      var postorderTraversal = function (root) {
+        if (root == null) return [];
+        let collect = [];
+        let stack = [];
+
+        stack.push(root);
+
+        while (stack.length !== 0) {
+          const node = stack.pop();
+          // 弹出一个就记录一个
+          collect.push(node.val);
+          // 先压左
+          if (node.left) {
+            stack.push(node.left);
+          }
+          // 后压入右节点 会先弹出来进行处理
+          if (node.right) {
+            stack.push(node.right);
+          }
+        }
+
+        let res = [];
+        while (collect.length) {
+          res.push(collect.pop());
+        }
+
+        return res;
+      };
+
+      /* 一个栈就实现后续遍历 */
+      var postorderTraversal1 = function (root) {
+        let point = root;
+        let stack = [];
+        stack.push(root);
+        let res = [];
+
+        while (stack.length) {
+          const node = stack[stack.length - 1];
+
+          if (
+            node.left !== null &&
+            point !== node.left &&
+            point !== node.right
+          ) {
+            stack.push(node.left);
+          } else if (node.right !== null && point !== node.right) {
+            stack.push(node.right);
+          } else {
+            res.push(node.val);
+            point = stack.pop();
+          }
+        }
+
+        return res;
+      };
+    </script>
+  </body>
+</html>

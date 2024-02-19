@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a href="https://www.nowcoder.com/practice/7037a3d57bbd4336856b8e16a9cafd71"
+      >问题地址</a
+    >
+    <script>
+      const arr = [3, 4, 3, 2, 4];
+
+      function minEnerge(arr) {
+        // 估算答案大致的区域
+        let left = 1;
+        let max = arr.reduce((a, b) => a + b);
+        let right = max;
+        let N = arr.length;
+
+        let mid = 0;
+        let ans = 0;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          if (f(arr, mid, max)) {
+            // 符合条件 此时需要降低初始能力值 求更好的答案
+            right = mid - 1;
+            ans = mid;
+          } else {
+            // 不符合 需要增大初始值
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      }
+
+      function f(arr, energe, maxHeight) {
+        for (let i = 0; i < arr.length; i++) {
+          if (energe >= arr[i]) {
+            energe += energe - arr[i];
+          } else {
+            energe -= arr[i] - energe;
+          }
+
+          // 很隐蔽的点1：这个对比的必须放在上一步能量计算之后避免这种情况：
+          // [1,0,8] 假设初始能量为2 当i=2的时候也就是最后一轮的时候 计算出来最终的能量为-7 其实此时就可以返回false了
+          //  但是假设这个判断的写在计算之前 那么这里就不会返回false 而是去执行i++ 最后循环结束却返回了true 造成结果的误差
+          if (energe <= 0) return false;
+          //  很隐蔽的点2：如果当前能量比最大值都大了 那么后面的不用对比了 一定可以通过 并且很可能会超出数字大小的限制
+          if (energe >= maxHeight) return true;
+        }
+
+        return true;
+      }
+
+      //   console.log(minEnerge(arr));
+      //   console.log(minEnerge([4, 4, 4]));
+      console.log(
+        minEnerge([
+          98417, 61639, 59941, 68033, 76628, 18375, 11190, 92249, 14287, 90647,
+          48643, 78379,
+        ])
+      );
+    </script>
+  </body>
+</html>

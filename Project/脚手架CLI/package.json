@@ -1,0 +1,27 @@
+{
+  "name": "xhzy-fast-cli",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "serve": "nodemon"
+  },
+  "type": "module",
+  "bin": "./bin/index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0",
+    "ini": "^4.1.1",
+    "inquirer": "^9.2.7",
+    "ora": "^6.3.1",
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.0",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.1.6"
+  }
+}

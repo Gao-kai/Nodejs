@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+          1. 二分不一定有序
+          2. 上升和下降区间判断很关键
+          3. 尤其注意if判断那边的逻辑 两个作用 证明小于的时候侧面证明了大
+          4. ans的初始值 最后break
+      */
+      function findMaxIndex(arr) {
+        if (arr.length == 1) return 0;
+        let len = arr.length;
+        // 单独验证0-1上是否有高峰值
+        if (arr[0] > arr[1]) return 0;
+        // 单独验证len-1到len-2上是否有高峰值
+        if (arr[len - 1] > arr[len - 2]) return len - 1;
+
+        /* 上面两个条件不符合 说明在1到n-2区间上一定有 因为重要的条件是任意两个连续的值不相等 */
+        let left = 1;
+        let right = arr.length - 2;
+        let mid = 1;
+        let ans = -1;
+
+        /* 山峰值：比左边的大 比右边的也大 */
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          if (arr[mid] < arr[mid - 1]) {
+            // 说明在left到mid-1上一定有 如果进入不到这个条件 侧面证明了条件1：arr[mid]的值一定大于arr[mid-1] 比如 7 10
+            right = mid - 1;
+          } else if (arr[mid] < arr[mid + 1]) {
+            // 说明在mid+1到right上一定有 如果进入不到这个条件 侧面证明了条件2：arr[mid]的值一定大于arr[mid+1] 比如 10 5
+            left = mid + 1;
+          } else {
+            // 以上两个条件不满足 说明条件1和2肯定满足 那么这个值一定是 比如 7 10 5
+            ans = mid;
+            break;
+          }
+        }
+
+        return ans;
+      }
+
+      const arr = [8, 9, 5, 6, 10, 15, 7];
+
+      console.log(findMaxIndex(arr));
+    </script>
+  </body>
+</html>

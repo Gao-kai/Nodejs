@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number[]} nums
+       * @param {number} k
+       * @return {number}
+       */
+      var findKthLargest = function (nums, k) {
+        // 数组排序后第k大的数字 不就是坐落于数组的第n-k位置上吗？
+        // 第1大的 就是排序数组中 length-1 也就是最后1位
+        // 第2大的 就是排序数组中 length-2 也就是倒数第2位
+        // ... 依次类推
+        return findKValue(nums, nums.length - k);
+      };
+
+      function findKValue(nums, kIndex) {
+        // 找出在数组nums中，数组上第index位置的数字即可
+        let l = 0;
+        let r = nums.length - 1;
+        let ans = 0;
+        while (l <= r) {
+          // 最好就是每次选中中点的值 这样复杂度就是On
+          // 最差就是每次选中最右边的值 这样复杂度就是ON平方
+          // 根据数学家的期望 这种随机算法就是On
+          let randomValue = nums[l + Math.floor(Math.random() * (r - l + 1))];
+          let [left, right] = partition(nums, randomValue, l, r);
+          if (left > kIndex) {
+            r = left - 1;
+          } else if (kIndex > right) {
+            l = right + 1;
+          } else {
+            ans = nums[kIndex];
+            break;
+          }
+        }
+
+        return ans;
+      }
+
+      // 荷兰国旗问题 在l到r的区间上 找出值为x在数组中的左右边界
+      // 最终等于randomValude值会单独在一个区间上 <x =x >x
+      function partition(nums, randomValue, l, r) {
+        // 小于x swap  a++ i++
+        // 等于x i++
+        // 大于x swap b-- i不变
+        let a = l;
+        let b = r;
+        let index = l;
+        // 只要指针跑到b的后面 说明走完了
+        while (index <= b) {
+          if (nums[index] < randomValue) {
+            swap(nums, a, index);
+            a++;
+            index++;
+          } else if (nums[index] > randomValue) {
+            swap(nums, b, index);
+            b--;
+          } else {
+            index++;
+          }
+        }
+
+        return [a, b];
+      }
+
+      function swap(nums, a, index) {
+        let temp = nums[a];
+        nums[a] = nums[index];
+        nums[index] = temp;
+      }
+    </script>
+  </body>
+</html>

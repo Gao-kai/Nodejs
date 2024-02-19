@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var MinStack = function () {
+        this.minStack = [];
+        this.dataStack = [];
+      };
+
+      /**
+       * @param {number} val
+       * @return {void}
+       */
+      MinStack.prototype.push = function (val) {
+        if (this.dataStack.length == 0) {
+          this.minStack.push(val);
+        } else {
+          let top = this.minStack[this.minStack.length - 1];
+          if (top >= val) {
+            this.minStack.push(val);
+          } else {
+            this.minStack.push(top);
+          }
+        }
+
+        this.dataStack.push(val);
+      };
+
+      /**
+       * @return {void}
+       */
+      MinStack.prototype.pop = function () {
+        this.minStack.pop();
+        return this.dataStack.pop();
+      };
+
+      /**
+       * @return {number}
+       */
+      MinStack.prototype.top = function () {
+        return this.dataStack[this.dataStack.length - 1];
+      };
+
+      /**
+       * @return {number}
+       */
+      MinStack.prototype.getMin = function () {
+        return this.minStack[this.minStack.length - 1];
+      };
+
+      /**
+       * Your MinStack object will be instantiated and called as such:
+       * var obj = new MinStack()
+       * obj.push(val)
+       * obj.pop()
+       * var param_3 = obj.top()
+       * var param_4 = obj.getMin()
+       */
+    </script>
+  </body>
+</html>

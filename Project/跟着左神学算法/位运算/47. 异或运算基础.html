@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+        异或^运算规律
+        1. 本质就是无符号相加
+        2. 满足结合律和交换律
+        3. 0异或任意数都是任意数，任意数异或自己都是0
+        4. 整体异或和x = A部分异或和 ^ B部分异或和
+     -->
+    <script>
+      /* 
+            通过异或^运算实现两个变量交换值
+            前提：被交换的两个变量必须是不同的内存地址
+         */
+      function swap(arr, a, b) {
+        // a是x b是y
+        arr[a] = arr[a] ^ arr[b]; // arr[a] = x  arr[b] = y arr[a] = x ^ y
+        arr[b] = arr[a] ^ arr[b]; // arr[b] = x^y^y = x^0 = x;
+        arr[a] = arr[a] ^ arr[b]; // a = x ^ y ^ x = y ^ 0 = y
+      }
+      let arr = [1, 2, 3, 4];
+      swap(arr, 0, 3);
+      console.log(arr); // [4,2,3,1]
+    </script>
+  </body>
+</html>

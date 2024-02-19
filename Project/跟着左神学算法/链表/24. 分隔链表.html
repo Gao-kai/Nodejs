@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} head
+       * @param {number} x
+       * @return {ListNode}
+       */
+      var partition = function (head, x) {
+        let dummyHead1 = new ListNode(-1);
+        let low = dummyHead1;
+        let dummyHead2 = new ListNode(-1);
+        let high = dummyHead2;
+        while (head !== null) {
+          if (head.val >= x) {
+            high.next = new ListNode(head.val);
+            high = high.next;
+          } else {
+            low.next = new ListNode(head.val);
+            low = low.next;
+          }
+
+          head = head.next;
+        }
+
+        high.next = null;
+        low.next = dummyHead2.next;
+        return dummyHead1.next;
+      };
+    </script>
+  </body>
+</html>

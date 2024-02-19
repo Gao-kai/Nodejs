@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+
+      function insertSort(array) {
+        if (array.length < 2) return array;
+
+        for (let i = 1; i < array.length; i++) {
+          /* 
+            每一轮都保证让0-j上有序即可
+            0-1上有序
+            0-2上有序
+            0-4上有序 那不就是排好了
+            0-i区间上已经有序
+          */
+          for (let j = i; j > 0; j--) {
+            if (array[j] < array[j - 1]) {
+              swap(array, j, j - 1);
+            }
+          }
+        }
+
+        return array;
+      }
+
+      console.log(insertSort([3, 5, 0, -7, 9, 4]));
+      //   14235
+    </script>
+  </body>
+</html>

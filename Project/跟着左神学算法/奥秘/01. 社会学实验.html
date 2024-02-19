@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+        基尼系数：差值总和 / 2 * 人数 * 财富总和
+        差值绝对值的总和 = 每一个人对所有人财富差值 * N
+     -->
+    <script>
+      const people = 100;
+      const round = 1000000;
+      const wealth = new Array(people).fill(100);
+
+      /* 产生一个[m,n)区间内的随机数 */
+      const generateRandom = (m, n) => {
+        return Math.floor(Math.random() * (n - m) + m);
+      };
+
+      /* 产生一个[m,n]区间内的随机数 */
+      const generateRandom1 = (m, n) => {
+        return Math.floor(Math.random() * (n - m + 1) + m);
+      };
+
+      const experiment = (people, round) => {
+        for (let i = 0; i < round; i++) {
+          /* 
+            为什么需要这个布尔数组？假设到第10轮，第5号用户开始的时候已经没有钱了，那么
+            这一轮按照规则他是不需要给钱的
+            但是如果没有一开始在给钱之前清算一轮当前用户hasMoney的话
+            刚好前面的人给了第5号一元 到第5号的时候原本不用给钱的 现在也得给钱 这样就会导致贫穷的人越来越穷
+           */
+          const hasMoney = new Array(people).fill(false);
+
+          for (let j = 0; j < people; j++) {
+            if (wealth[j] > 0) {
+              hasMoney[j] = true;
+            }
+          }
+
+          for (let j = 0; j < people; j++) {
+            if (hasMoney[j]) {
+              // 如果第i个人有钱 那么你就要给1元给除了自己的其他人
+              let other = j;
+              do {
+                other = generateRandom(0, people);
+              } while (other == j);
+
+              wealth[other]++;
+              wealth[j]--;
+            }
+          }
+        }
+      };
+
+      const logWealth = () => {
+        let res = "";
+        for (let i = 0; i < wealth.length; i++) {
+          const money = wealth[i];
+          if (i !== 0 && i % 9 == 0) {
+            res += "\r\n";
+          } else {
+            res += money + " ";
+          }
+        }
+
+        console.log(res);
+      };
+
+      const calcGini = () => {
+        let sumOfWealth = 0;
+        let sumOfAbsDifference = 0;
+        let n = wealth.length;
+        for (let i = 0; i < n; i++) {
+          sumOfWealth += wealth[i];
+          for (let j = 0; j < n; j++) {
+            const diff = Math.abs(wealth[i] - wealth[j]);
+            sumOfAbsDifference += diff;
+          }
+        }
+        return sumOfAbsDifference / (2 * wealth.length * sumOfWealth);
+      };
+
+      console.log("实验开始---");
+      experiment(people, round);
+      wealth.sort((a, b) => a - b);
+      logWealth();
+      console.log("实验结束当前社会的基尼系数为:", calcGini());
+    </script>
+  </body>
+</html>

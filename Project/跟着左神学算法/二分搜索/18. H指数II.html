@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number[]} citations
+       * @return {number}
+       */
+      var hIndex = function (citations) {
+        // h指数最小是0 最大是全部都引用
+        let left = 0;
+        let right = Math.max(...citations);
+        let mid = 0;
+        let ans = -1;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          // 问：当作者的h指数是mid的时候，此时是否成立？
+          if (f(citations, mid)) {
+            // 需要提高h指数
+            left = mid + 1;
+            ans = mid;
+          } else {
+            right = mid - 1;
+          }
+        }
+
+        return ans;
+      };
+
+      /* 求当作者的指数为h=2的时候，是否至少有h篇论文被引用了h次？ */
+      function f(citations, h) {
+        let num = 0;
+        for (let i = 0; i < citations.length; i++) {
+          if (citations[i] >= h) {
+            num++;
+          }
+        }
+
+        // 符合条件的论文数量
+        return num >= h;
+      }
+    </script>
+  </body>
+</html>

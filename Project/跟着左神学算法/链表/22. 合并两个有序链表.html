@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./LinkedList.js"></script>
+    <script>
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode} list1
+       * @param {ListNode} list2
+       * @return {ListNode}
+       */
+      var mergeTwoLists = function (list1, list2) {
+        let dummyHead = new ListNode(-1);
+        let p = dummyHead;
+        let l1 = list1;
+        let l2 = list2;
+
+        while (l1 !== null && l2 !== null) {
+          if (l1.val < l2.val) {
+            p.next = l1;
+            l1 = l1.next;
+          } else {
+            p.next = l2;
+            l2 = l2.next;
+          }
+
+          p = p.next;
+        }
+
+        if (l1 == null) {
+          p.next = l2;
+        }
+
+        if (l2 == null) {
+          p.next = l1;
+        }
+
+        return dummyHead.next;
+      };
+    </script>
+  </body>
+</html>

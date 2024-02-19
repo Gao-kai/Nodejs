@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../node_modules/@gg-vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+      console.log(GG_VueReactivity);
+      const { reactive, computed, effect } = GG_VueReactivity;
+
+      const state = reactive({
+        name: "lilei",
+      });
+
+      const newName = computed(() => {
+        console.log("计算属性取值一次");
+        return state.name + "- good";
+      });
+
+      //   测试缓存
+      //   console.log(newName.value);
+      //   console.log(newName.value);
+      //   console.log(newName.value);
+
+      //   修改age之后下次去是否会重新依赖
+      //   state.name = "Tom";
+      //   console.log(newName.value);
+
+      effect(() => {
+        console.log(newName.value);
+      });
+
+      setTimeout(() => {
+        state.name = "Bob";
+      }, 1000);
+    </script>
+  </body>
+</html>

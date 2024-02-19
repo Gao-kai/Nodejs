@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hash路由</title>
+  </head>
+  <body>
+    <div class="nav-header">
+      <a href="/">首页</a>
+      <a href="/about">关于</a>
+      <a href="/personal">个人中心</a>
+    </div>
+
+    <div class="router-view"></div>
+    <script>
+      const routerView = document.querySelector(".router-view");
+      const navHeader = document.querySelector(".nav-header");
+
+      navHeader.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          e.preventDefault();
+          history.pushState({}, "", e.target.href);
+          routerMatch();
+        }
+      });
+
+      const routes = [
+        {
+          path: "/",
+          component: "这是首页要渲染的内容",
+        },
+        {
+          path: "/about",
+          component: "这是关于要渲染的内容",
+        },
+        {
+          path: "/personal",
+          component: "这是个人中心要渲染的内容",
+        },
+      ];
+
+      const routerMatch = () => {
+        const path = location.pathname;
+
+        let matched = routes.find((route) => {
+          return route.path === path;
+        });
+
+        if (matched) {
+          routerView.innerHTML = matched.component;
+        }
+      };
+
+      /* 默认匹配/路由 */
+      history.pushState({}, "", "/");
+      routerMatch();
+
+      window.onpopstate = (e) => {
+        console.log({ e });
+        routerMatch();
+      };
+    </script>
+  </body>
+</html>

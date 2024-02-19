@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>二分答案法</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 找的是最小速度 那么首先确定最小速度吃完和最大速度吃完的区间
+       * 基于现实的自然智慧分析就可以确定左右边界
+       *
+       * 接下来就是在这个区间上找出一个符合条件的最小速度
+       * 条件就是在h小时内吃完所有piles香蕉
+       * 二分的复杂度是log2Max Max是数组中最大值
+       * 然后每次二分都要去遍历一遍数组计算时间复杂度是N
+       * 最后就是Nlog2Max N是数组长度 Max是数组中最大的值
+       */
+      var minEatingSpeed = function (piles, h) {
+        let left = 1;
+        let right = 0;
+        for (const pile of piles) {
+          if (pile > right) {
+            right = pile;
+          }
+        }
+
+        let ans = 0;
+        while (left <= right) {
+          let mid = left + ((right - left) >> 1);
+          if (f(piles, mid) > h) {
+            // 需要加快速度 那么不更新答案 继续向右边速度大的半边二分
+            left = mid + 1;
+          } else {
+            // 需要寻找更加小的速度 更新答案 继续向左边速度小的半边二分
+            ans = mid;
+            right = mid - 1;
+          }
+        }
+
+        return ans;
+      };
+
+      // 计算在speed的速度下吃完所有香蕉所花费的时间
+      // a/b向上取整 = （a+b-1）/b向下取整
+      function f(piles, speed) {
+        let hours = 0;
+        for (let i = 0; i < piles.length; i++) {
+          const pile = piles[i];
+          if (speed >= pile) {
+            hours += 1;
+          } else {
+            hours += Math.ceil(pile / speed);
+          }
+        }
+        return hours;
+      }
+
+      console.log(minEatingSpeed([3, 6, 7, 11], 8));
+      console.log(minEatingSpeed([30, 11, 23, 4, 20], 5));
+      console.log(minEatingSpeed([3, 6, 7, 11], 6));
+    </script>
+  </body>
+</html>

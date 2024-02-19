@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function deepClone(target, set = new Set()) {
+        if (set.has(target)) {
+          return target;
+        }
+
+        // 考虑基本值 直接返回即可
+        let primitiveType = [
+          "Number",
+          "String",
+          "Boolean",
+          "Undefined",
+          "Null",
+          "Bigint",
+          "Symbol",
+        ];
+
+        const getType = (value) => {
+          return Object.prototype.toString.call(value).slice(8, -1);
+        };
+        if (primitiveType.includes(getType(target))) {
+          return target;
+        }
+
+        // 考虑函数
+        if (typeof target === "function") {
+          return function (...args) {
+            return target.apply(null, args);
+          };
+        }
+
+        // 考虑Date和正则
+        if (target instanceof Date || target instanceof RegExp) {
+          return new target.constructor(target);
+        }
+
+        // 考虑map和set
+
+        // 考虑数组和对象
+        set.add(target);
+        let res = Array.isArray(target) ? [] : {};
+        for (const key in target) {
+          res[key] = deepClone(target[key], set);
+        }
+
+        return res;
+      }
+
+      const target = {
+        arr: [1, 2, 3, 4],
+        obj1: {
+          name: "aaa",
+          age: 178,
+        },
+        run(args) {
+          console.log(args);
+        },
+        now: Date.now(),
+        reg: /\.js$/g,
+      };
+
+      target.a = {};
+      target.b = {};
+      target.a.b = target.b;
+      target.b.a = target.a;
+
+      const res = deepClone(target);
+
+      res.arr[0] = 100;
+      res.obj1.name = "nihao";
+      res.run(111);
+      res.now = 100;
+
+      console.log({ target, res });
+    </script>
+  </body>
+</html>

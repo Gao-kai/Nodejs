@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number[]} bloomDay
+       * @param {number} m
+       * @param {number} k
+       * @return {number}
+       */
+      var minDays = function (bloomDay, m, k) {
+        // 如果只有7个花 但是要制作 5*2 = 10个 那么任意一天取采集也不行啊
+        if (bloomDay.length < m * k) {
+          return -1;
+        }
+
+        /* 
+            最小的等待天数一定是花开的最快的那一组，因为最快开也要这么多天；
+            最大的等待天数一定是花开的最慢的那一组，因为不可能比他更慢了
+        */
+
+        let left = Math.min(...bloomDay);
+        let right = Math.max(...bloomDay);
+        let mid = 0;
+        let ans = -1;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          if (f(bloomDay, mid, m, k)) {
+            // 可以采集完成 那么我减少天数
+            right = mid - 1;
+            ans = mid;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      };
+
+      /* 在days天内 能不能采集到m*k朵花
+        这个辅助函数的核心是：
+        1. 过分高估了days的情况，其实days就是一个条件，看第days天每一组花开的情况
+        2. 如果开了，就收集起来并看看是不是可以打包，避免跨没有开的花打包 一定要收集一朵就去打包 打包完成就马上清空flowers
+        3. 如果没有开，那么就看下一组花，这是就要把之前采集的没有符合打包的鲜花丢掉 谁让你没有连续呢
+      */
+      function f(bloomDay, days, m, k) {
+        let total = 0;
+        let flowers = 0;
+        for (let i = 0; i < bloomDay.length; i++) {
+          // 计算当已经是第days天的时候 每一组花开的情况
+          // 无论花是那一天开的 也只能采集一次 一次一朵
+          if (bloomDay[i] <= days) {
+            flowers++;
+
+            // 是否可以包扎为一组花 一定是每次产生花就去包扎  避免跨花
+            if (flowers == k) {
+              total++;
+              flowers = 0;
+            }
+          } else {
+            // 如果还没有开 那么之前收集的因为不满足包扎数量的花就要丢掉
+            flowers = 0;
+          }
+
+          // 每一轮收集包扎之后都去看下 是否已经满足要求了
+          if (total >= m) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      console.log(minDays([1, 10, 3, 10, 2], 3, 1));
+      console.log(minDays([1, 10, 3, 10, 2], 3, 2));
+      console.log(minDays([7, 7, 7, 7, 12, 7, 7], 2, 3));
+    </script>
+  </body>
+</html>

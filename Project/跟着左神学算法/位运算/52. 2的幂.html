@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number} n
+       * @return {boolean}
+       */
+      /*
+        1. 如果一个数是2的幂次方 那么这个数字的二进制只有一个1
+        2. 取出这个数的最右侧的1,基于BK算法
+        3. 如果这个数是2的幂那么最右侧1取出和自己还是相等的,否则不是2的幂
+       */
+      var isPowerOfTwo = function (n) {
+        return n > 0 && (n & -n) === n;
+      };
+    </script>
+  </body>
+</html>
+
+1000 1000

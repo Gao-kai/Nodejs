@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // 目标语言的版本
+    "module": "ESNext", // 生成代码的模板标准
+    "outDir": "./bin", // 指定输出目录
+    "moduleResolution": "NodeNext", // 模块解析策略，ts默认用node的解析策略，即相对的方式导入
+    "esModuleInterop": true, // 允许export=导出，由import from 导入
+    "resolveJsonModule": true, //设置true则可以直接import导入本地的json文件,例如import pathOptions from './
+    "rootDirs": ["src","out"], // 将多个目录放在一个虚拟目录下，用于运行时，即编译后引入文件的位置可能发生变化，这也设置可以虚拟src和out在同一个目录下，不用再去改变路径也不会报错
+    "baseUrl": "./src", // 解析非相对模块的基地址，默认是当前目录
+
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

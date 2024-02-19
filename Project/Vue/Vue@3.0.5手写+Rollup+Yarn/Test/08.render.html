@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../packages/runtime-dom/dist/runtime-dom.global.js"></script>
+    <script>
+      console.log(GG_VueRuntimeDom);
+      const { createApp, h, mount, reactive } = GG_VueRuntimeDom;
+
+      const App = {
+        // 组件还是要props来接收 否则setup中拿不到
+        props: {
+          id: String,
+        },
+        // 替代beforeCreate 只运行一次 暴露api 组件中使用组合式 API 的入口
+        setup(props, { attrs, slots, emit, expose }) {
+          // 内部的this会是window
+          const state = { age: "18" };
+
+          //   setup返回对象 然后在render函数中通过proxy.state.xxx使用 比较怕麻烦
+          return {
+            state,
+          };
+
+          //   setup直接返回一个render函数 这个函数内部不就可以天然的使用setup函数内部的props attrs, slots, emit, expose  以及ref和reactive等数据了吗
+          return (proxy) => {
+            // 再也不用this.xxx 或者proxy.xxx
+            return h(
+              "h1",
+              { style: { color: "pink" }, class: "title", id: "demo" },
+              `hello world 组合式数据 ${state.age} 选项式数据${name}`
+            );
+          };
+        },
+        data() {
+          return {
+            name: "lilei",
+          };
+        },
+
+        // 会将data选项数据和setup返回的对象进行一个完整的合并 然后一起交付给render函数的proxy参数
+        // render和v2参数不一样 h函数传递参数不一样
+        render(proxy) {
+          // h（hyperscript 能生成 HTML (超文本标记语言) 的 JavaScript）
+          // createVNodes
+          // 接受字符串、vNode对象或者函数式组件 返回一个虚拟DOM对象
+          return h(
+            "h1",
+            { style: { color: "pink" }, class: "title", id: "demo" },
+            `hello world 组合式数据 ${proxy.state.age} 选项式数据${proxy.name}`
+          );
+        },
+      };
+
+      const app = createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

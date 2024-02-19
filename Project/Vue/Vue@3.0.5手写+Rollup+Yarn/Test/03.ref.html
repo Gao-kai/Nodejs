@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app1"></div>
+    <div id="app2"></div>
+    <script src="../node_modules/@gg-vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+      console.log(GG_VueReactivity);
+      const { shallowRef, ref, effect } = GG_VueReactivity;
+
+      const name = ref("李雷");
+      console.log({
+        name,
+      });
+
+      const effect1 = effect(() => {
+        app1.innerHTML = name.value;
+      });
+
+      setTimeout(() => {
+        name.value = "Tom";
+      }, 1000);
+
+      const info = ref({
+        name: "lilei",
+        age: "18",
+      });
+
+      console.log({
+        info,
+      });
+
+      const effect2 = effect(() => {
+        const { name, age } = info.value;
+        app2.innerHTML = name + "--" + age;
+      });
+
+      setTimeout(() => {
+        info.value.name = "haha";
+        info.value.age = "30";
+      }, 1000);
+    </script>
+  </body>
+</html>

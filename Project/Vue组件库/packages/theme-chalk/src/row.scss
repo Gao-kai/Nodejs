@@ -1,0 +1,22 @@
+@import "./common/mixin.scss";
+
+@include b(row) {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+
+  @each $justify in "end", "center", "space-around", "space-between",
+    "space-evenly"
+  {
+    &.is-justify-#{$justify} {
+      @if $justify == "end" {
+        justify-content: flex-end;
+      } @else {
+        justify-content: #{$justify};
+      }
+    }
+  }
+
+  /* 其实这里利用@when来实现更加简单 要想到凡是用is开头的都用when来实现 */
+}

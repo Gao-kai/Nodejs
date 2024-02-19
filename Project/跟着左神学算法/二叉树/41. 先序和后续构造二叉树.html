@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val, left, right) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.left = (left===undefined ? null : left)
+       *     this.right = (right===undefined ? null : right)
+       * }
+       */
+      /**
+       * @param {number[]} preorder
+       * @param {number[]} postorder
+       * @return {TreeNode}
+       */
+
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+
+      var constructFromPrePost = function (preorder, postorder) {
+        let n = preorder.length;
+        if (n == 1) return new TreeNode(preorder[0]);
+
+        let map = new Map();
+        for (let i = 0; i < postorder.length; i++) {
+          map.set(postorder[i], i);
+        }
+
+        let root = build(preorder, 0, n - 1, postorder, 0, n - 1, map);
+        return root;
+      };
+
+      function build(preorder, l1, r1, postorder, l2, r2, map) {
+        if (l1 > r1) {
+          return null;
+        }
+
+        let head = new TreeNode(preorder[l1]);
+        if (l1 == r1) {
+          return head;
+        }
+
+        let find = map.get(preorder[l1 + 1]);
+        head.left = build(
+          preorder,
+          l1 + 1,
+          l1 + (find - l2 + 1),
+          postorder,
+          l2,
+          find,
+          map
+        );
+        head.right = build(
+          preorder,
+          l1 + (find - l2 + 2),
+          r1,
+          postorder,
+          find + 1,
+          r2,
+          map
+        );
+        return head;
+      }
+
+      console.log(
+        constructFromPrePost([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1])
+      );
+    </script>
+  </body>
+</html>

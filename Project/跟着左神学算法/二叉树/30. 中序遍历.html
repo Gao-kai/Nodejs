@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 1. 子树节点 就一直处理 先把左子树处理完成
+       * 2. 子树没有左节点了 弹出栈顶 才执行一次打印
+       * 3. 然后拿到当前弹出的元素的右子树 重复步骤1
+       * 4. 如果栈空了 并且当前树的节点不为空 结束
+       */
+      var inorderTraversal = function (root) {
+        if (root == null) return [];
+        const res = [];
+        const stack = [];
+        // 不能提前将根节点加入栈中
+        while (stack.length !== 0 || root != null) {
+          // 如果子树不为空 就先加入到栈中 然后一直把左子树加完
+          if (root !== null) {
+            stack.push(root);
+            root = root.left;
+          } else {
+            // 如果子树为空 可能是左子树为空 也可能是弹出的这个节点右子树也为空
+            // 弹出的节点不可能再去走左子树了
+            const node = stack.pop();
+            res.push(node.val);
+            root = node.right;
+          }
+        }
+
+        return res;
+      };
+    </script>
+  </body>
+</html>

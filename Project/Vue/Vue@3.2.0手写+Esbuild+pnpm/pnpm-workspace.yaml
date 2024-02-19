@@ -1,0 +1,11 @@
+# pnpm-workspace.yaml是干什么的？
+# pnpm-workspace.yaml 定义 workspace 的根目录，使你能够在工作区中包含/排除目录。
+# 默认情况下，包含所有子目录的所有包。
+
+packages:
+  # all packages in direct subdirs of packages/ 表示包含所有子目录的包
+  - "packages/*"
+  # all packages in subdirs of components/ 表示包含所有components目录下的包
+  - "components/**"
+  # exclude packages that are inside test directories 表示除了所有文件夹中的test文件夹中的所有文件之外的包都包含在内
+  - "!**/test/**"

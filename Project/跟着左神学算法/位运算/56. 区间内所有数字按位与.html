@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="../image-21.png" alt="" />
+    <script>
+      /* 
+  ！！！可以从left到right依次进行遍历 然后依次进行按位与 得到最后的值 但是这种实现不优雅
+
+  解题思路：
+  1. 任意多个数按位与的过程中，只要任意一位是0，那么结果的那个数字这一位一定是0，全是1才是1，这是前提
+  比如：
+  10001100
+  10010111
+  00010100
+
+  最终结果一定只有第三位的1保留：00000100
+
+  2. 如果left=right，那么直接返回自己即可，因为自己和自己按位与一定是自己
+  3. 如果left<right, 那么思路是：
+  + right-1的结果一定存在于left到right的闭区间内，否则无法满足条件left<right
+  + 基于上一个条件，此时right和right-1一定存在于区间内，它们两个按位与的结果一定会影响到最终的结果
+  + 重要结论：任意一个数自己减去1，一定会让自己罪右侧的1变为0，比如：
+  1000 - 0001 = 0111
+  0100 - 0001 = 0011
+  0011 - 0001 = 0010
+
+  其实很好想，两个数减-1，一定会改变最右侧为1的状态，不是直接-1变为0，就是后一位借1变为0
+
+  4. 那么基于以上的推断，a和a-1进行按位与，a的最右侧的1一定会变为0，那么在按位与的过程中这一位一定会变为0
+      并且最终的答案中这一位也一定是0
+  5. 那么问题又来了，如果做到仅仅将一个数x的最右侧的1变为0，但是其余位的状态都维持原来，答案就是：
+  基于BK算法 先提取出这一位为1的二进制状态 然后用原来的值减去
+       10001000
+  提取：00001000
+  减去：10000000 因为提取出来的值其余位都是0，所以减的过程中可以保证其他位在未来的按位与过程中不会影响最终的结果
+
+ 
+*/
+
+      /**
+       * @param {number} left
+       * @param {number} right
+       * @return {number}
+       */
+      var rangeBitwiseAnd = function (left, right) {
+        while (left < right) {
+          right = right - (right & -right);
+        }
+        return right;
+      };
+    </script>
+  </body>
+</html>

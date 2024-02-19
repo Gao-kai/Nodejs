@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="../image-8.png" alt="" />
+    <script>
+      /**
+       * 完全让头和尾进行解耦
+       * 1.要加入值，就看limit先允许不，如果允许那就给尾部位置的指针赋值，本来队列就是尾部入，然后让size++，然后尾指针前进
+       * 2.要弹出值，就看limit是否为0，如果不为0那就将头部位置的指针赋值为null，然后返回，本来队列就是头部弹出，然后size--，然后头指针前进
+       * 3. 不管头部指针还是尾部指针 如果前进到大于limit了，那么回归到第0位即可
+       * 4. 这个过程中核心是size变量，有了它的约束，才保证了循环
+       **/
+      /**
+       * @param {number} k
+       */
+      var MyCircularQueue = function (k) {
+        this.queen = new Array(k);
+        this.limit = k;
+        this.head = 0;
+        this.tail = 0;
+        this.size = 0;
+      };
+
+      /**
+       * @param {number} value
+       * @return {boolean}
+       */
+      MyCircularQueue.prototype.enQueue = function (value) {
+        if (this.size >= this.limit) {
+          return false;
+        }
+
+        this.queen[this.tail] = value;
+        /* 
+      不能先直接++ 必须要判断当前tail的位置是在最后位置还是其他
+      1. 如果已经在最后了，那么就不加了啊，直接返回0，因为这一步你加到哪里去呢？
+      2. 如果没有在最后，那么才前进
+     */
+        if (this.tail === this.limit - 1) {
+          this.tail = 0;
+        } else {
+          this.tail++;
+        }
+
+        this.size++;
+        return true;
+      };
+
+      /**
+       * @return {boolean}
+       */
+      MyCircularQueue.prototype.deQueue = function () {
+        if (this.size == 0) {
+          return false;
+        }
+
+        this.queen[this.head] = null;
+        if (this.head === this.limit - 1) {
+          this.head = 0;
+        } else {
+          this.head++;
+        }
+        this.size--;
+        return true;
+      };
+
+      /**
+       * @return {number}
+       */
+      MyCircularQueue.prototype.Front = function () {
+        if (this.size == 0) {
+          return -1;
+        }
+
+        return this.queen[this.head];
+      };
+
+      /**
+       * @return {number}
+       */
+      MyCircularQueue.prototype.Rear = function () {
+        if (this.size == 0) {
+          return -1;
+        }
+
+        // 因为每次存放的值都放在当前tail-1的位置
+        // 如果当前位置等于0 那么说明是超出了之后返回到0的 此时返回最后一个节点的值
+        if (this.tail == 0) {
+          // 那么返回最后一个节点的值
+          return this.queen[this.limit - 1];
+        } else {
+          // 否则返回tail-1的值即可
+          return this.queen[this.tail - 1];
+        }
+      };
+
+      /**
+       * @return {boolean}
+       */
+      MyCircularQueue.prototype.isEmpty = function () {
+        return this.size === 0;
+      };
+
+      /**
+       * @return {boolean}
+       */
+      MyCircularQueue.prototype.isFull = function () {
+        return this.size === this.limit;
+      };
+
+      const queen = new MyCircularQueue(3);
+      queen.enQueue(1);
+      queen.enQueue(3);
+      queen.enQueue(5);
+      queen.enQueue(6);
+      queen.deQueue();
+      queen.deQueue();
+      queen.deQueue();
+    </script>
+  </body>
+</html>

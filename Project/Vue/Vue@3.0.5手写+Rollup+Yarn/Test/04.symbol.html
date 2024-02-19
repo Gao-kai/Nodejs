@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let obj = {
+        namenick: "土猫儿乖乖",
+        team: "heat",
+        [Symbol.toStringTag]: "haha",
+        [Symbol.toPrimitive](type) {
+          return "123";
+        },
+        [Symbol.iterator]() {
+          // 这里的this是
+          let index = 0;
+          let keys = Object.keys(this);
+          let that = this;
+
+          return {
+            next() {
+              let done = index >= keys.length;
+              let value = !done ? that[keys[index++]] : undefined;
+              return {
+                value,
+                done,
+              };
+            },
+          };
+        },
+      };
+
+      console.log(obj.toString());
+      console.log(obj + "haha");
+      for (const value of obj) {
+        console.log(value); // 土猫儿乖乖  heat
+      }
+    </script>
+  </body>
+</html>

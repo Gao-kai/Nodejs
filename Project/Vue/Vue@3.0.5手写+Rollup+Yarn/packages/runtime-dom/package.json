@@ -1,0 +1,14 @@
+{
+  "name": "@gg-vue/runtime-dom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "module": "dist/runtime-dom.esm-bundler.js",
+  "buildOptions": {
+    "name": "GG_VueRuntimeDom",
+    "formats": [
+      "esm-bundler",
+      "global"
+    ]
+  }
+}

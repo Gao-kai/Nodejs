@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number} n
+       * @return {boolean}
+       * -231 <= n <= 231 - 1
+       * 基于题目要求 在2的31次方-1以内,最大的3次幂就是3的19次方
+       * 1. 如果一个数是3的幂,那么这个数一定包含3这个质数因子
+       * 2. 3的19次方只有3这个质数因子,如果对n取模返回0 说明n也是3的幂,否则说明n不是,因为取模后留下来其他因子
+       */
+      var isPowerOfThree = function (n) {
+        const maxThreePower = Math.pow(3, 19);
+        return n > 0 && maxThreePower % n === 0;
+      };
+
+      /* 这是一种万能做法 可以做任意幂的判断 */
+      /**
+       * @param {number} n
+       * @return {boolean}
+       *
+       */
+      var isPowerOfThree = function (n) {
+        let number = 1;
+        while (number < n) {
+          number *= 3;
+        }
+        return number === n;
+      };
+    </script>
+  </body>
+</html>

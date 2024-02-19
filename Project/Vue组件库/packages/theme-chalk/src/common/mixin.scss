@@ -1,0 +1,41 @@
+@import "./var.scss";
+
+/* .g-button */
+@mixin b($block) {
+  $B: $namespace + "-" + $block;
+  .#{$B} {
+    @content;
+  }
+}
+
+/* .g-button.is-xxx */
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+
+/* .g-button--primary */
+@mixin m($modifier) {
+  @at-root {
+    #{& + $modifier-separator + $modifier} {
+      @content;
+    }
+  }
+}
+
+@mixin e($element) {
+  @at-root {
+    #{& + $element-separator + $element} {
+      @content;
+    }
+  }
+}
+
+@mixin button-type($color, $bg-color, $border-color) {
+  color: $color;
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+}

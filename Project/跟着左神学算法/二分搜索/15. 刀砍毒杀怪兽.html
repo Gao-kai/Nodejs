@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="./image-6.png" alt="" srcset="" />
+    <script>
+      const cuts = [100, 999, 999];
+      const poisons = [50, 100, 185];
+      const hp = 500;
+      function minRound(hp, cuts, poisons) {
+        let left = 1;
+        let right = hp + 1;
+        let mid = 0;
+        let ans = -1;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          // 请问：是否可以在mid回合内将怪兽击败
+          if (f(hp, cuts, poisons, mid)) {
+            // 那么回合数可以更小
+            right = mid - 1;
+            ans = mid;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      }
+
+      function f(hp, cuts, poisons, minRound) {
+        let actRound = Math.min(cuts.length, minRound);
+        for (let i = 0, j = 1; i < actRound; i++, j++) {
+          const cut = cuts[i];
+          const poison = poisons[i];
+          // 这一轮的最大收益
+          const max = Math.max(cut, (minRound - j) * poison);
+          hp -= max;
+
+          if (hp <= 0) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      console.log(minRound(hp, cuts, poisons));
+    </script>
+  </body>
+</html>

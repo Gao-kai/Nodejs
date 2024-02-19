@@ -1,0 +1,17 @@
+{
+  "name": "rollup-handwrite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/rollup.js",
+  "scripts": {
+    "dev": "node --inspect-brk debugger.js",
+    "build": "node debugger.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "acorn": "^8.10.0",
+    "magic-string": "^0.30.3"
+  }
+}

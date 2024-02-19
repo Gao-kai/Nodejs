@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {TreeNode} root
+       * @return {number[]}
+       */
+      var preorderTraversal = function (root) {
+        if (root == null) return;
+        // 进入当前子树
+        console.log(root.val);
+        preorderTraversal(node.left);
+        // 我的左子树处理完成
+        console.log(root.val);
+        preorderTraversal(node.right);
+        // 我的右子树处理完成
+        console.log(root.val);
+      };
+
+      /* 栈实现非递归版本 */
+      var preorderTraversal = function (root) {
+        if (root == null) return [];
+        const stack = [];
+        const res = [];
+        stack.push(root);
+        while (stack.length !== 0) {
+          // 先取出一个执行打印或者存储
+          const node = stack.pop();
+          res.push(node.val);
+          // 先压入右边的 弹出的就是左边优先
+          if (node.right) {
+            stack.push(node.right);
+          }
+
+          if (node.left) {
+            stack.push(node.left);
+          }
+        }
+
+        return res;
+      };
+    </script>
+  </body>
+</html>

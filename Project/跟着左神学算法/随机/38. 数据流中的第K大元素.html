@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number} k
+       * @param {number[]} nums
+       */
+      var KthLargest = function (k, nums) {
+        this.nums = nums;
+        this.k = k;
+      };
+
+      /**
+       * @param {number} val
+       * @return {number}
+       */
+      KthLargest.prototype.add = function (val) {
+        this.nums.push(val);
+        // 开始快排
+        return findKthLargest(this.nums, this.nums.length - this.k);
+      };
+
+      function findKthLargest(nums, k) {
+        let l = 0;
+        let r = nums.length - 1;
+        let ans = 0;
+        while (l <= r) {
+          let randomValue = nums[l + Math.floor(Math.random() * (r - l + 1))];
+          const [left, right] = partition(nums, l, r, randomValue);
+          if (left > k) {
+            r = left - 1;
+          } else if (right < k) {
+            l = right + 1;
+          } else {
+            ans = nums[k];
+            break;
+          }
+        }
+
+        return ans;
+      }
+
+      function partition(nums, l, r, randomValue) {
+        let a = l;
+        let b = r;
+        let i = l;
+
+        while (i <= b) {
+          if (nums[i] == randomValue) {
+            i++;
+          } else if (nums[i] > randomValue) {
+            swap(nums, i, b);
+            b--;
+          } else {
+            swap(nums, i, a);
+            a++;
+            i++;
+          }
+        }
+
+        return [a, b];
+      }
+
+      function swap(nums, i, j) {
+        let temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+      }
+    </script>
+  </body>
+</html>

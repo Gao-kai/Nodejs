@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../node_modules/@gg-vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+      console.log(GG_VueReactivity);
+      const { reactive, effect } = GG_VueReactivity;
+
+      const target = {
+        name: "lilei",
+        age: 18,
+        address: {
+          provice: "甘肃",
+        },
+        other: "666",
+        arr: [100, 200, 300],
+      };
+
+      const state = reactive(target);
+
+      const stop1 = effect(() => {
+        console.log("stop1函数执行一次 页面重新渲染");
+        app.innerHTML = state.name + state.age + state.address.provice;
+      });
+      //  1.依赖的值变了应该重新render
+      // state.name = "wanggang";
+      // state.address.provice = "四川";
+
+      // 2.和effect没有关联的属性怎么变都没有用 因为压根没有依赖收集
+      setTimeout(() => {
+        state.name = "wanggang";
+        state.age = "30";
+        state.age = "20";
+        state.other = "和effect无关的一个属性";
+      }, 1000);
+
+      /*     const stop2 = effect(() => {
+        console.log("stop2函数执行一次 页面渲染一次");
+        app.innerHTML = state.arr[2] + "---" + state.arr.length;
+      });
+
+      setTimeout(() => {
+        state.arr.length = 0;
+      }, 1000); */
+      /* 
+      const stop3 = effect(() => {
+        console.log("stop3函数执行一次 页面渲染一次");
+        app.innerHTML = state.arr;
+      });
+
+      setTimeout(() => {
+        state.arr[10] = 500;
+      }, 1000); */
+    </script>
+  </body>
+</html>

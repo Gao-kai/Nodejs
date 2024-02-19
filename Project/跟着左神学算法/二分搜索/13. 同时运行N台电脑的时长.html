@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const batteries = [3, 3, 3];
+      const n = 2;
+
+      /**
+       * 分析前提：
+       * 1. 如果某一个电池的电量大于等于最长运行的时间m，那么就可以认为至少有一台电脑可以满足条件允许完毕，多余的先不考虑
+       * 2. 除了上面的条件1之外，所有小于最长运行时长的碎片电池，所有电量累加的和大于剩余电脑台数 * 最大运行时长，那么也一定可以让剩余电脑运行完毕
+       *
+       *
+       */
+      var maxRunTime = function (n, batteries) {
+        let left = 0;
+        let sum = batteries.reduce((a, b) => a + b);
+        let max = Math.max(...batteries);
+
+        /**
+         * 贪心优化：
+         * 1. 如果当前电池组中最大值为max
+         * 2. 并且所有电池之和为sum
+         *
+         * 那么当n*max<=sum的时候，说明：
+         * 1. 此时可以运行的最大时长一定是大于等于max的
+         * [10,10,20,15，15]
+         * 3台电脑
+         *
+         * 20 * 3 < 70
+         * 假定一个前提此时需要支持3台电脑运行20分钟，那么可以认为电池组中所有电池都是碎片电池
+         * 只要碎片电池的和大于60，那么就一定可以运行完毕
+         *
+         * 基于这个推断，我们可以反向得出最大运行的时间其实就是：70 / 3 = 23
+         *
+         * 如果最大运行时长比max都大，那你所有电池不就是碎片电池吗？
+         * 既然你已经满足了所有电池的之和大于n*max，所以我们就可以不断地在max的基础上取嗅探更大的值
+         *
+         * 如果上面这个条件不满足，那么说明最大运行时间一定在0-max范围上
+         * 这样就可以大大缩小二分的范围
+         *
+         */
+        if (sum >= n * max) {
+          return Math.floor(sum / n);
+        }
+
+        let ans = -1;
+        let mid = 0;
+        /* 重要的优化 可以大大缩小范围 */
+        let right = max;
+        while (left <= right) {
+          // 假定当最长时间为mid的时候，请问当前电池组可以支撑所有电脑运行完毕吗？
+          mid = left + ((right - left) >> 1);
+          if (f(batteries, n, mid)) {
+            // 可以运行完毕 那么说明最长时间还可以再加大
+            left = mid + 1;
+            ans = mid;
+          } else {
+            // 不行 那么减少最小运行时长
+            right = mid - 1;
+          }
+        }
+
+        return ans;
+      };
+
+      function f(batteries, n, maxTime) {
+        // 碎片电池的电量总和
+        let fragmentsSum = 0;
+        for (let i = 0; i < batteries.length; i++) {
+          const battey = batteries[i];
+          // 至少有一台可以保证over
+          if (battey >= maxTime) {
+            n--;
+          } else {
+            // 收集碎片
+            fragmentsSum += battey;
+          }
+
+          // 当碎片电池电量之和已经大于剩余的电脑*最大时长 那么一定可以运行完毕
+          if (fragmentsSum >= n * maxTime) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+    </script>
+  </body>
+</html>

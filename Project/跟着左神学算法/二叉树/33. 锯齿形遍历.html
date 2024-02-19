@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /** * @param {TreeNode} root * @return {number[][]} */
+      var zigzagLevelOrder = function (root) {
+        if (root == null) return [];
+        let ans = [];
+        let quene = [];
+        quene.push(root);
+        // 第一层是顺序 下一层才是倒序
+        let reverse = false;
+        while (quene.length > 0) {
+          let size = quene.length;
+          let levels = [];
+          for (let i = 0; i < size; i++) {
+            let curr = quene.shift();
+            if (reverse) {
+              levels.unshift(curr.val);
+            } else {
+              levels.push(curr.val);
+            }
+
+            if (curr.left) {
+              quene.push(curr.left);
+            }
+
+            if (curr.right) {
+              quene.push(curr.right);
+            }
+          }
+
+          ans.push(levels);
+          reverse = !reverse;
+        }
+
+        return ans;
+      };
+    </script>
+
+    <!-- 非数组版本 重点需要掌握来回遍历的技巧 -->
+    <script>
+      var zigzagLevelOrder = function (root) {
+        if (root == null) return [];
+        let ans = [];
+        let quene = [];
+        let left = 0;
+        let right = 0;
+        quene[right] = root;
+        right++;
+        let reverse = false;
+        while (left < right) {
+          let size = right - left;
+          let levels = [];
+
+          let start = reverse ? right - 1 : left;
+          let offset = reverse ? -1 : 1;
+
+          /* 收集节点 基于reverse的值来回收集 */
+          for (let k = 0; k < size; start += offset, k++) {
+            let curr = quene[start];
+            levels.push(curr.val);
+          }
+
+          for (let i = 0; i < size; i++) {
+            let curr = quene[left++];
+            if (curr.left !== null) {
+              // right指向的就是队列尾部的位置 每次存入一个元素前进一位 代表下一次新元素进来的位置
+              quene[right++] = curr.left;
+            }
+
+            if (curr.right !== null) {
+              quene[right++] = curr.right;
+            }
+          }
+
+          // 收集完成 记入ans
+          ans.push(levels);
+          // 最后将下一轮的reverse状态反转
+          reverse = !reverse;
+        }
+
+        return ans;
+      };
+    </script>
+  </body>
+</html>

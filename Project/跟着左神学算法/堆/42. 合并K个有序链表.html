@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val, next) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.next = (next===undefined ? null : next)
+       * }
+       */
+      /**
+       * @param {ListNode[]} lists
+       * @return {ListNode}
+       */
+
+      var mergeKLists = function (lists) {
+        let minHeap = new Heap((a, b) => a.val - b.val);
+        for (const head of lists) {
+          if (head !== null) {
+            minHeap.add(head);
+          }
+        }
+
+        if (minHeap.isEmpty()) return;
+
+        let dummyHead = new ListNode(-1);
+        let p = dummyHead;
+
+        while (!minHeap.isEmpty()) {
+          let top = minHeap.remove();
+          p.next = top;
+          p = p.next;
+
+          if (top.next !== null) {
+            minHeap.add(top.next);
+          }
+        }
+
+        return dummyHead.next;
+      };
+
+      function swap(nums, i, j) {
+        [nums[i], nums[j]] = [nums[j], nums[i]];
+      }
+
+      /* JS实现一个最小堆 */
+      class Heap {
+        constructor(compare) {
+          this.compare = compare;
+          this.quene = [];
+          this.size = 0;
+        }
+
+        isEmpty() {
+          return this.size == 0;
+        }
+
+        size() {
+          return this.size;
+        }
+
+        add(val) {
+          this.quene.push(val);
+          this.size++;
+          let index = this.size - 1;
+          let parentIndex = Math.floor((index - 1) >> 1);
+          while (
+            parentIndex >= 0 &&
+            this.compare(this.quene[parentIndex], this.quene[index]) > 0
+          ) {
+            swap(this.quene, index, parentIndex);
+            index = parentIndex;
+            parentIndex = Math.floor((index - 1) >> 1);
+          }
+        }
+
+        remove() {
+          if (this.size == 0) return;
+          swap(this.quene, 0, this.size - 1);
+          let top = this.quene.pop();
+          this.size--;
+
+          let curr = 0;
+          let left = 2 * curr + 1;
+          while (left < this.size) {
+            let right = 2 * curr + 2;
+            let best =
+              right < this.size &&
+              //   可以认为就是比大小
+              //  如果这里写<0 并且比较器是a-b 说明本来就希望第一个小于第二个 那么说明第一个值小于第二个值是成立的
+              // 如果写>0  并且比较器是a-b 说明希望第一个数大于第二个
+              this.compare(this.quene[left], this.quene[right]) > 0
+                ? right
+                : left;
+            best =
+              this.compare(this.quene[curr], this.quene[best]) > 0
+                ? best
+                : curr;
+            if (best === curr) break;
+            swap(this.quene, best, curr);
+            curr = best;
+            left = 2 * curr + 1;
+          }
+
+          return top;
+        }
+      }
+
+      function ListNode(val, next) {
+        this.val = val || null;
+        this.next = next || null;
+      }
+
+      console.log(
+        mergeKLists([
+          {
+            val: -8,
+            next: {
+              val: -7,
+              next: {
+                val: -7,
+                next: { val: -5, next: { val: 1, next: null } },
+              },
+            },
+          },
+          { val: -2, next: null },
+          {
+            val: -10,
+            next: {
+              val: -10,
+              next: {
+                val: -7,
+                next: { val: 0, next: { val: 1, next: null } },
+              },
+            },
+          },
+          { val: 2, next: null },
+        ])
+      );
+    </script>
+  </body>
+</html>

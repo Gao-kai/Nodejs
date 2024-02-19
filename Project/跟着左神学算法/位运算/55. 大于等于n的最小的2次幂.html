@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="../image-21.png" alt="" />
+    <script>
+      function solution(n) {
+        // 所有小于0的数字它最接近的2次幂只能是2的0次方也就是1
+        if (n < 0) {
+          return 1;
+        }
+
+        /* 
+            下面这些代码的含义就是：
+            从n这个数字的二进制状态的最左侧的1开始，
+            依次将右边都刷新为1
+            比如：00100100
+            刷新后：00111111
+            然后得到这种后面全是1的数字只需要+1，就可以产生进位
+            得到一个只有一个1剩余全是0的数字
+            前面说了只有一个1剩余全是0的数字一定是2的幂次方
+        */
+        n--;
+        n = n | (n >> 1);
+        n = n | (n >> 2);
+        n = n | (n >> 4);
+        n = n | (n >> 8);
+        n = n | (n >> 16);
+
+        return n + 1;
+      }
+
+      console.log(solution(14));
+      console.log(solution(56));
+      console.log(solution(129));
+    </script>
+  </body>
+</html>

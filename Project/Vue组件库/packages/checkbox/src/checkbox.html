@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>checkbox</title>
+  </head>
+  <body>
+    <!-- 
+        原生checkbox的使用 
+        1. type=checkbox渲染为一个多选框
+        2. name属性用于表单提交时的key 比如scales=on 它默认具有值 on
+        3. id属性和label标签的for属性进行配合 用于提高用户体验
+        4. html属性 checked 表示该复选框是否被默认选中（当页面加载时）。
+          它不表示这个复选框当前是否被选中：
+          如果复选框的状态被改变，这个内容属性不反映这个变化
+          html属性checked用来实现初始化的视觉选中效果
+          当用户修改了选中效果之后 这个html属性不会变化 变化的是 HTMLInputElement 对象的attribute
+          也就是html标签上挂的check还在 但是DOM属性是变化了的
+          
+        5. value属性用于表单提交的value  比如horns=newsletter
+        6. HTMLInputElement 对象的 indeterminate 属性（它不能用 HTML 属性设置）表示半选
+        提交时：
+        1. 如果选中没有value属性 那么是name=on
+        2. 如果选中有value属性 那么是name=value
+        3. 如果没选中 不会有任何提交
+    -->
+    <form>
+      <div>
+        <input type="checkbox" id="scales" name="scales" checked />
+        <label for="scales">Scales</label>
+      </div>
+      <button type="submit">订阅</button>
+    </form>
+
+    <div>
+      <input type="checkbox" id="horns" name="horns" value="newsletter" />
+      <label for="horns">Horns</label>
+    </div>
+  </body>
+</html>

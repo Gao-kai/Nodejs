@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 异或^运算规律
+        1. 本质就是无符号相加
+        2. 满足结合律和交换律
+        3. 0异或任意数都是任意数，任意数异或自己都是0
+        4. 整体异或和x = A部分异或和 ^ B部分异或和
+
+        提取二进制状态下的任意一位的数 看他是1还是0？
+        打印二进制？
+        获取一个数字的符号位 其实本质就是题目1
+        返回任意一个数字的符号位
+    */
+      /**
+       * @param {number[]} nums
+       * @return {number}
+       */
+      var singleNumber = function (nums) {
+        // 拿到所有数整体异或和 有相同的会在这个过程中被消除
+        let eorSum = 0;
+        for (const num of nums) {
+          eorSum ^= num;
+        }
+        return eorSum;
+      };
+    </script>
+  </body>
+</html>

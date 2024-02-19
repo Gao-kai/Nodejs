@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        二分的时间复杂度：log2n n是数组 长度
+      */
+      /* 
+            1. while的判断条件 为什么是<= 而不是< 这是因为找左边界的话 最后一定会收缩到l和r都指向0，此时你不等于 直接没法乡下走了
+            2. 必须是有序数组 才可以二分
+            3. >> 右移操作 可以快速求一个非负数除以2的向下取整的数字
+            4. 为了防止溢出 l + (r-l >> 1)
+        */
+      function exist(arr, val) {
+        if (arr.length == 0) return false;
+        let left = 0;
+        let right = arr.length - 1;
+
+        while (left <= right) {
+          // let mid = (left + right) >> 1;
+          let mid = left + ((right - left) >> 1);
+          if (arr[mid] == val) {
+            return true;
+          } else if (arr[mid] > val) {
+            right = mid - 1;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return false;
+      }
+
+      const arr = [1, 5, 7, 8, 12, 25, 36];
+
+      // console.log(exist(arr, 1));
+
+      /* 
+        求有序数组中>=val的最左边位置，val不一定存在数组，也有可能存在多个val
+        [1,2,5,9,10,15] 大于等于9的最左侧位置是3
+        [1,2,9,9,9,10,15] 大于等于9的最左侧位置是2
+        [1,2,9,9,9,10,15] 大于等于20的最左侧位置是-1
+
+        1. 默认的ans = -1
+        2. 当mid的值大于等于val，更新答案然后继续向左二分
+        3. 当mid的值小于val，不更新答案，然后继续向右二分
+
+        注意：找>=val的最右边位置没有意义 因为在有序数组中只需要看最后一位的值是否大于等于val
+        如果大于等于，那么返回这个最后一位的索引
+        如果小于，那么返回-1，因为最后一位都比val小，左边的一定比val小
+
+        这个道理在找<=val的最左边位置是一样的，只需要看第0位的就好
+      */
+
+      function findLeftIndex(arr, val) {
+        let left = 0;
+        let right = arr.length - 1;
+        let ans = -1;
+        let mid = 0;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          if (arr[mid] >= val) {
+            ans = mid;
+            right = mid - 1;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      }
+      const arr1 = [1, 2, 5, 9, 10, 15];
+      const arr2 = [1, 2, 9, 9, 9, 10, 15];
+      const arr3 = [1, 2, 9, 9, 9, 10, 15];
+      console.log(findLeftIndex(arr1, 9));
+      console.log(findLeftIndex(arr2, 9));
+      console.log(findLeftIndex(arr3, 20));
+
+      /* 
+        求有序数组中<=val的最右边位置，val不一定存在数组，也有可能存在多个val
+        1. 当mid的值小于等于val，那么说明其左边的一定都小于val，没必要再找，需要更新值然后继续向右边查
+        2. 否则当mid的值都比val大，那么不更新位置，直接向左继续找
+      */
+      function findRightIndex(arr, val) {
+        let left = 0;
+        let right = arr.length - 1;
+        let ans = -1;
+        let mid = 0;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          if (arr[mid] <= val) {
+            ans = mid;
+            left = mid + 1;
+          } else {
+            right = mid - 1;
+          }
+        }
+
+        return ans;
+      }
+
+      console.log(findRightIndex(arr1, 9));
+      console.log(findRightIndex(arr2, 10));
+      console.log(findRightIndex(arr3, 0));
+    </script>
+  </body>
+</html>

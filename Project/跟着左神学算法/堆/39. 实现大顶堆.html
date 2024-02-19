@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 任意一个子树都是最大堆的结构才是最大堆  */
+      class MaxHeap {
+        constructor() {
+          this.arr = [];
+          this.size = 0;
+        }
+
+        /* 将第i位的元素向上进行调整 维持最大堆的结构稳定 */
+        heapInsert(arr, i, size) {
+          if (size == 1) return;
+          //   先对比自己和自己的父亲
+          while (arr[i] > arr[Math.floor((i - 1) >> 1)]) {
+            // 交换父子
+            swap(arr, i, Math.floor((i - 1) >> 1));
+            // 更新交换后的位置也就是原来的父节点
+            i = Math.floor((i - 1) >> 1);
+            if (i == 0) break;
+          }
+        }
+
+        /* 将第i位的元素向下进行调整 维持最大堆的结构特性 */
+        heapify(arr, i, size) {
+          if (size == 1) return;
+          let leftIndex = 2 * i + 1;
+          //   如果左孩子的索引都超出边界了 那么不用下滤了 说明没位子了
+          while (leftIndex < size) {
+            let rightIndex = leftIndex + 1;
+            // 找出左右孩子的最强者
+            let best =
+              rightIndex < size && arr[rightIndex] >= arr[leftIndex]
+                ? rightIndex
+                : leftIndex;
+            // 当前i位置再和最强者的儿子比
+            best = arr[i] >= arr[best] ? i : best;
+            // 如果i和bset相同 说明当前i位置的父亲比两个儿子都大 那么不需要再向下调整了
+            if (i == best) {
+              break;
+            }
+            // 否则交换父子
+            swap(arr, i, best);
+            // 维持下一次交换的位置
+            i = best;
+            leftIndex = 2 * i + 1;
+          }
+        }
+
+        /* 向堆中添加元素 每一个尾部添加的元素都会上滤到最顶端 */
+        add(val) {
+          this.arr.push(val);
+          this.size++;
+          this.heapInsert(this.arr, this.size - 1, this.size);
+        }
+
+        /*
+            从堆顶删除一个元素
+            1. 先获取最后一位的值size-1
+            2. 然后获取堆顶的值 比较大的值 0
+            3. 把尾部的值移除pop掉 这一步实现了删除
+            4. 从顶部开始下滤 把小的冲下去
+            5. 直到size超出边界或者说比自己所有儿子都大 那么ok
+        */
+        remove() {
+          if (this.size == 0) return;
+          const max = this.arr[0];
+          swap(this.arr, 0, this.size - 1);
+          this.arr.pop();
+          this.size--;
+          this.heapify(this.arr, 0, this.size);
+          return max;
+        }
+
+        /* 获取堆顶元素 */
+        getMax() {
+          return this.arr[0];
+        }
+      }
+
+      function swap(arr, i, j) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+
+      const heap = new MaxHeap();
+      //   heap.add(2);
+      //   heap.add(5);
+      //   heap.add(3);
+      //   heap.add(8);
+      //   heap.add(4);
+      //   heap.remove();
+      //   heap.remove();
+      //   heap.remove();
+      //   heap.remove();
+      //   heap.remove();
+
+      const arr = [8, 5, 3, 2, 4, 6, 7, 1];
+
+      /* 堆排序 */
+      function heapSort(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          heap.add(arr[i]);
+        }
+        // 调整最大值
+        let l = 0;
+        let size = heap.size;
+        while (size !== 0) {
+          // 先交换首尾
+          swap(heap.arr, 0, size - 1);
+          //   并不真的移除元素 而是减小size 等于把最大的那一个值从堆的尾部删除了 但是实际还是在
+          size--;
+          // 然后每次都从0的位置下滤
+          heap.heapify(heap.arr, 0, size);
+        }
+
+        return heap.arr;
+      }
+
+      //   console.log(heapSort(arr));
+      console.log(heapSort([10, 2, 8, 5, 0, 10, 5, 7, 56]));
+    </script>
+  </body>
+</html>

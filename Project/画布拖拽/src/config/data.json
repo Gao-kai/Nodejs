@@ -1,0 +1,48 @@
+{
+  "container": {
+    "width": 550,
+    "height": 550
+  },
+  "blocks": [
+    {
+      "left": 100,
+      "top": 100,
+      "zIndex": 1,
+      "key": "text",
+      "id": "text-01",
+      "props": {
+        "text": "默认文本",
+        "color": "#000000",
+        "size": "20px"
+      }
+    },
+    {
+      "left": 200,
+      "top": 100,
+      "zIndex": 1,
+      "key": "button",
+      "id": "button-01",
+      "props": {
+        "text": "默认按钮文本",
+        "color": "#000000",
+        "type": "primary",
+        "size": "default"
+      }
+    },
+    {
+      "left": 300,
+      "top": 100,
+      "zIndex": 1,
+      "key": "input",
+      "id": "input-01",
+      "model": {}
+    }
+  ],
+  "previews": [
+    { "left": 100, "top": 100, "zIndex": 1, "key": "text" },
+    { "left": 100, "top": 200, "zIndex": 1, "key": "button" },
+    { "left": 100, "top": 300, "zIndex": 1, "key": "input" },
+    { "left": 100, "top": 400, "zIndex": 1, "key": "range" },
+    { "left": 100, "top": 500, "zIndex": 1, "key": "select" }
+  ]
+}

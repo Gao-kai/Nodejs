@@ -1,0 +1,13 @@
+{
+  "name": "@gg-vue/runtime-core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "module": "dist/runtime-core.esm-bundler.js",
+  "buildOptions": {
+    "name": "GG_VueRuntimeCore",
+    "formats": [
+      "esm-bundler"
+    ]
+  }
+}

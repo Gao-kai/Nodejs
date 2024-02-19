@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 1. 总计进行N轮 每一轮将数字最大的冒泡到最右边
+       * 2.
+       *
+       * 5 4 2 8 1
+       *
+       *
+       *
+       */
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+
+      /* 0-i区间内 相邻位置较大的滚到后面 最大值来到i位置 后面继续0到i-1区间上进行冒泡 */
+      function bubbleSort(array) {
+        if (array.length < 2) return array;
+
+        for (let i = 0; i < array.length - 1; i++) {
+          for (let j = 0; j < array.length - i - 1; j++) {
+            if (array[j] > array[j + 1]) {
+              swap(array, j, j + 1);
+            }
+          }
+        }
+        return array;
+      }
+
+      console.log(bubbleSort([5, 1, 2, 9, 4]));
+    </script>
+  </body>
+</html>

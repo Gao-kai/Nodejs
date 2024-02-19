@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 共进行n-1次循环，每一轮循环都需要找到i到n-1区间的最小值 然后将当前最小值所在的位置和第i位进行互换  最小值就排在了最前面 */
+      function selectionSort(arr) {
+        if (arr.length < 2) return arr;
+        for (let i = 0; i < arr.length - 1; i++) {
+          let minIndex = i;
+          for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+              minIndex = j;
+            }
+          }
+          swap(arr, i, minIndex);
+        }
+
+        return arr;
+      }
+
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+
+      console.log(selectionSort([5, 8, 7, 2, 9]));
+    </script>
+  </body>
+</html>

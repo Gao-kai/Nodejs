@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 画家问题 分隔数组的最大值 -->
+    <script>
+      /*
+          1. 估计最终答案的可能范围是什么 m=1的时候 此时和的最大值就是数组之和 m=5的时候 和的最大值就是数组中的最大值
+          2. 问题的答案是子数组和的最大值 给定的值是分隔的个数
+          3. 当子数组的和为max-sum的时候，求出一个中间位置mid 先计算将数组arr划分，划分的每一个子数组的最大值不能超过mid 此时需要划分几个字符串
+          4. 将子数组的个数和题目给的对比 然后二分即可
+          5. 一开始可能大范围可以粗略 反正要二分
+      */
+
+      /**
+       * @param {number[]} nums
+       * @param {number} k
+       * @return {number}
+       */
+      var splitArray = function (nums, k) {
+        let left = 0;
+        let right = nums.reduce((a, b) => a + b);
+        let ans = 0;
+
+        /* 最终答案一定落在left-right区间上 经典的二分问题 */
+        while (left <= right) {
+          let mid = left + ((right - left) >> 1);
+          const need = f(nums, mid);
+          if (need <= k) {
+            right = mid - 1;
+            ans = mid;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      };
+
+      console.log(splitArray([7, 2, 5, 10, 8], 2));
+
+      /* 
+        当分割数组的最大值设置为mid时 求需要分割为k个
+        如果num的个数小于题目给的k个，说明我这个分割数组的最大值定为limit都足够了，此时需要更新答案并且调小limit
+        如果num的个数大于题目给的k个，说明不达标，此时需要你把limit调大
+        */
+      function f(nums, limit) {
+        /* 这个初始值非常重要 num=1 最后就不需要处理末尾有值却没加上去的问题 */
+        let num = 1;
+        let sum = 0;
+
+        for (let i = 0; i < nums.length; i++) {
+          // 有一个大的 直接返回
+          if (nums[i] > limit) {
+            return Number.MAX_SAFE_INTEGER;
+          }
+
+          if (sum + nums[i] > limit) {
+            num++;
+            sum = nums[i];
+          } else {
+            sum += nums[i];
+          }
+        }
+
+        return num;
+      }
+    </script>
+  </body>
+</html>

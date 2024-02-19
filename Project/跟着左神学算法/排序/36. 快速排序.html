@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="../image-13.png" alt="" />
+    <img src="../image-14.png" alt="" />
+    <script>
+      /* 快速排序随机普通版本 N平方的复杂度 不推荐 */
+      function quickSort(arr) {
+        let l = 0;
+        let r = arr.length - 1;
+        sort(arr, l, r);
+        return arr;
+      }
+
+      function sort(arr, l, r) {
+        // base case
+        if (l >= r) return;
+        // 从l-r闭区间上获取一个随机数 对于算法的复杂度具有重要意义 n * logn
+        let randomValue = arr[l + Math.floor(Math.random() * (r - l + 1))];
+        // 获取这个随机index所在位置的数x在下一次进行递归的中间位置
+        // 前提是经过这个操作之后 这个x的左侧都是小于它的 右侧都是大于它的
+        const mid = partition(arr, randomValue, l, r);
+
+        sort(arr, l, mid - 1);
+        sort(arr, mid + 1, r);
+      }
+
+      function partition(arr, randomValue, l, r) {
+        let i = l;
+        let left = l; // 表示left位置左侧都是小于等于这个随机数的值 右侧都是大于的
+        let randomValueIndex = -1; // 记录数组遍历过程中randomIndex值所在的位置任意一个就可以了 最后用于交换到left-1的位置 保证left左侧第一个一定是随机的值
+
+        while (i <= r) {
+          if (arr[i] <= randomValue) {
+            // 交换left和i位置的值 交换之后left位置的一定是小于等于randomValue的值
+            swap(arr, left, i);
+            // 找到随机值所在的数组索引 不能是randomValue == arr[i] 因为i位置的值已经被交换走了
+            if (arr[left] == randomValue) {
+              randomValueIndex = left;
+            }
+            i++;
+            left++;
+          } else {
+            i++;
+          }
+        }
+
+        swap(arr, left - 1, randomValueIndex);
+
+        return left - 1;
+      }
+
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+
+      /* 快速排序随机荷兰国旗版本 N * LGN 牛客可以过 letcode过不了 只有归并可以过 */
+      function quickSort2(arr) {
+        let l = 0;
+        let r = arr.length - 1;
+        sort2(arr, l, r);
+        return arr;
+      }
+
+      function sort2(arr, l, r) {
+        if (l >= r) return;
+        let randomValue = arr[l + Math.floor(Math.random() * r - l + 1)];
+        // 荷兰国旗快速排序法
+        let [left, right] = partition2(arr, randomValue, l, r);
+        sort2(arr, l, left - 1);
+        sort2(arr, right + 1, r);
+      }
+
+      function partition2(arr, randomValue, l, r) {
+        let i = l;
+        let first = l; // 认为a左边的都是小于随机值
+        let last = r; // 认为b右边的都是大于随机值的
+        while (i <= last) {
+          if (arr[i] < randomValue) {
+            swap(arr, i, first);
+            first++;
+            i++;
+          } else if (arr[i] == randomValue) {
+            i++;
+          } else {
+            // 大于的发送到大于的区间上去 然后b-- 缩小这个区间
+            swap(arr, i, last);
+            last--;
+            // 注意这里i不能++ 因为交换过来的还没有比呢 如果比自己小的话还要前进
+          }
+        }
+
+        return [first, last];
+      }
+
+      console.log(quickSort([3, 5, 6, 2, 1, 4, 8, 2]));
+      console.log(quickSort2([3, 5, 6, 2, 1, 4, 8, 2]));
+    </script>
+  </body>
+</html>

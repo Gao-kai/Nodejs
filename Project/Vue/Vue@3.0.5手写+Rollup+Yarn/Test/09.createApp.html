@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="../packages/runtime-dom/dist/runtime-dom.global.js"></script>
+    <script>
+      console.log(GG_VueRuntimeDom);
+
+      const { createApp, h, reactive } = GG_VueRuntimeDom;
+
+      // App组件 其实就是一个带有render函数的对象
+      const App = {
+        setup(props, context) {
+          console.log("setup执行", {
+            props,
+            context,
+          });
+
+          // 内部的this会是window
+          const state = reactive({ age: "18", name: "lilei" });
+
+          //   setup返回对象 然后在render函数中通过proxy.state.xxx使用 比较怕麻烦
+          // return {
+          //   state,
+          // };
+          //   setup直接返回一个render函数 这个函数内部不就可以天然的使用setup函数内部的props attrs, slots, emit, expose  以及ref和reactive等数据了吗
+          return (proxy) => {
+            // 再也不用this.xxx 或者proxy.xxx
+
+            // h('div',{})
+            // h('div','hello world')
+            // h('div',{},'hello world')
+            // h('div',{},[h('p',{}),'span'])
+            // h('div',{},['p','span'])
+
+            /* 测试的文档中 每次trigger后会cleanup 然后执行effect的fn函数 执行fn函数会重新track依赖 */
+            /* 但是在我们这里 trigger后cleanup 然后执行effect的fn函数 也就是h函数的时候 被那个isMounted被锁住了 没法重新收集依赖 所以只能打印一次 */
+
+            const handleClick = () => {
+              // alert("土猫儿乖乖！");
+              console.log("土猫儿乖乖！");
+              state.age = 20;
+              state.age = 30;
+              state.age = 40;
+            };
+
+            return h(
+              "h1",
+              {
+                // style: { color: "pink" },
+                // class: "title",
+                // id: "demo",
+                onclick: handleClick,
+              },
+              `${state.age}`
+              // [
+              //   `hello world`,
+              //   `组合式数据 ${proxy.age}`,
+              //   `选项式数据${proxy.name}`,
+              //   h("h2", "子节点h2"),
+              // ]
+            );
+          };
+        },
+        render(proxy) {
+          // render方法一定是一个effect函数 数据发生变化 会重新渲染
+          console.log("调用组件传入的render函数进行渲染", proxy);
+          console.log(proxy.name);
+        },
+      };
+
+      // createApp用来创建一个vue的根实例
+      const app = createApp(App, { name: "lilei", age: 18 });
+
+      // 创建好之后进行挂载
+      app.mount("#root");
+    </script>
+  </body>
+</html>

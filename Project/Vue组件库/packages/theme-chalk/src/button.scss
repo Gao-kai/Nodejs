@@ -1,0 +1,80 @@
+@import "./common/mixin.scss";
+@import "./common/var.scss";
+
+/* 按钮相关的样式变量 */
+$--g-ui-text-color: #606266;
+$--g-ui-bg-color: #ffffff;
+$--g-ui-font-weight: 400;
+$--g-ui-border-color: #dcdfe6;
+$--g-ui-border-radius: 4px;
+$--g-ui-font-size-base: 14px;
+$--g-ui-border: 1px solid $--g-ui-border-color;
+
+/* 生成一个g-button的类名 */
+@include b(button) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  height: 32px;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 8px 15px;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.1s;
+  color: $--g-ui-text-color;
+  font-weight: $--g-ui-font-weight;
+  background-color: $--g-ui-bg-color;
+  font-size: $--g-ui-font-size-base;
+  border: $--g-ui-border;
+  border-color: $--g-ui-border-color;
+  border-radius: $--g-ui-border-radius;
+  user-select: none;
+  vertical-align: middle;
+  -webkit-appearance: none;
+
+  & [class*="g-icon-"] + span {
+    margin-left: 6px;
+  }
+
+  @include when(disabled) {
+    cursor: not-allowed;
+    background-color: #dcdfe6;
+    color: #a8abb2;
+    border-color: #e4e7ed;
+  }
+
+  @include when(loading) {
+    pointer-events: none;
+  }
+
+  @include when(round) {
+    border-radius: 16px;
+  }
+
+  @include m(primary) {
+    @include button-type($--color-white, $--color-primary, $--color-primary);
+  }
+
+  @include m(success) {
+    @include button-type($--color-black, $--color-success, $--color-success);
+  }
+
+  @include m(warning) {
+    @include button-type($--color-black, $--color-warning, $--color-warning);
+  }
+
+  @include m(danger) {
+    @include button-type($--color-black, $--color-danger, $--color-danger);
+  }
+
+  @include m(info) {
+    @include button-type($--color-black, $--color-info, $--color-info);
+  }
+
+  @include m(default) {
+    @include button-type($--color-black, $--color-white, $--g-ui-border-color);
+  }
+}

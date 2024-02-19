@@ -1,0 +1,21 @@
+@import "./common/var.scss";
+@import "./common/mixin.scss";
+
+/* 生成24种写法 span从0到24 BEM规范 */
+@include b(col) {
+  background-color: pink;
+  box-sizing: border-box;
+
+  @for $index from 1 through 24 {
+    &.g-col-span-#{$index} {
+      max-width: calc(
+        $index / 24 * 100%
+      ); // 防止内容宽度超出容器破坏容器所占宽度
+      flex: calc($index / 24 * 100%);
+    }
+
+    &.g-col-offset-#{$index} {
+      margin-left: calc($index / 24 * 100%);
+    }
+  }
+}

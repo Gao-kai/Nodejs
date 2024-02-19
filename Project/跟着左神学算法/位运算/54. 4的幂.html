@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 如果一个数是四的幂,那么而必须满足:
+            1. 这个数必然也是2的幂
+            2. 并且这个数对3取模必然是1
+        */
+      /**
+       * @param {number} n
+       * @return {boolean}
+       */
+      var isPowerOfFour = function (n) {
+        return n > 0 && (n & -n) === n && n % 3 === 1;
+      };
+    </script>
+  </body>
+</html>

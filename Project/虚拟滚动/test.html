@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			#box{
+				height: 500px;
+				width: 500px;
+				border: 1px solid orangered;
+				margin: 100px;
+				overflow-y: scroll;
+				position: relative;
+			}
+			
+			.data{
+				height: 500px;
+				background-color: pink;
+				width: 200px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 5;
+				/* 向上拉  我就反方向向下持续给力 */
+				transform: translateY(50px);
+			}
+			
+			.scroll{
+				height: 1000px;
+				background-color: aquamarine;
+				opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div class="data"></div>
+			<div class="scroll"></div>
+		</div>
+	</body>
+</html>

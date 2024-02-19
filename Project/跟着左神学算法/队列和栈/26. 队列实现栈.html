@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 牢记一点：
+       * 1. 队列模拟栈只需要一个队列即可
+       * 2. 每次进队列的时候记住当前有几个元素 假设有n个
+       * 3. 当前元素先push
+       * 4. 然后从头弹出尾部压入这个操作做n次
+       *
+       * 注意：千万不要以为数组一样可以push可以pop不就好了吗
+       * 你可是模拟的队列 队列只有尾部进入头部出 千万不能绕开这一点去操作
+       *
+       **/
+      var MyStack = function () {
+        this.quene = [];
+      };
+
+      /**
+       * @param {number} x
+       * @return {void}
+       */
+      MyStack.prototype.push = function (x) {
+        if (this.quene.length == 0) {
+          this.quene.push(x);
+        } else {
+          let n = this.quene.length;
+          this.quene.push(x);
+          while (n > 0) {
+            this.quene.push(this.quene.shift());
+            n--;
+          }
+        }
+      };
+
+      /**
+       * @return {number}
+       */
+      MyStack.prototype.pop = function () {
+        return this.quene.shift();
+      };
+
+      /**
+       * @return {number}
+       */
+      MyStack.prototype.top = function () {
+        return this.quene[0];
+      };
+
+      /**
+       * @return {boolean}
+       */
+      MyStack.prototype.empty = function () {
+        return this.quene.length == 0;
+      };
+    </script>
+  </body>
+</html>

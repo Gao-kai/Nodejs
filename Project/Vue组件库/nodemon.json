@@ -1,0 +1,4 @@
+{
+  "watch": ["./packages/theme-chalk"],
+  "exec": "npm run build:theme"
+}

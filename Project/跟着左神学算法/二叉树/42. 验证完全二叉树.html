@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+            最核心的两个点：
+            1. 如果一个节点只有右孩子但是没有左孩子 那么false
+            2. 如果整个树上遇到一个节点的两个孩子不全，那么接下来的所有节点都必须是叶子节点，否则返回false
+        */
+      /**
+       * @param {TreeNode} root
+       * @return {boolean}
+       */
+      var isCompleteTree = function (root) {
+        if (root == null) {
+          return true;
+        }
+        let quene = [];
+        quene.push(root);
+        let flag = false;
+        while (quene.length !== 0) {
+          let curr = quene.shift();
+          // 有右没有左返回false
+          if (curr.right !== null && curr.left == null) return false;
+          // 已经遇到过不满节点之后 如果遇到非叶子节点直接返回false
+          if (flag && (curr.left !== null || curr.right !== null)) return false;
+
+          if (curr.left !== null) {
+            quene.push(curr.left);
+          }
+
+          if (curr.right !== null) {
+            quene.push(curr.right);
+          }
+
+          // 至少有一个自节点是null 说明这个节点除非自己是叶子节点 那么后续所有节点必须为叶子节点
+          // 或者说明这个节点只有左节点 没有右节点 那么后续所有节点也必须为叶子节点
+          if (curr.left == null || curr.right == null) {
+            flag = true;
+          }
+        }
+
+        return true;
+      };
+    </script>
+  </body>
+</html>

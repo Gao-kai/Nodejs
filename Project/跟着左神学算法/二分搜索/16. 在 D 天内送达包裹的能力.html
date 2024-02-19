@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    /**
+     * @param {number[]} weights
+     * @param {number} days
+     * @return {number}
+     */
+    var shipWithinDays = function (weights, days) {
+      let left = 0;
+      let right = 0;
+      for (const weight of weights) {
+        // 最大运力应该是和 一次就给你拿走
+        right += weight;
+        // 最小运力应该是货物的最大值 要不然都拿不走
+        if (weight > left) {
+          left = weight;
+        }
+      }
+
+      let mid = 0;
+      let ans = -1;
+
+      while (left <= right) {
+        // 问：当船的运力为mid时，这些货物你几天可以运完？
+        mid = left + ((right - left) >> 1);
+
+        if (f(weights, mid) <= days) {
+          // 需要减小运力 找出最优解
+          right = mid - 1;
+          ans = mid;
+        } else {
+          // 需要加大运力
+          left = mid + 1;
+        }
+      }
+
+      return ans;
+    };
+
+    /**
+     * 算法小技巧：给你一个数组arr，给你一个limit，计算这个数组中的元素可以被多少个limit大的盒子装完？
+     * 1. 外层for循环遍历货物，每次可以外层的时候说明之前的盒子装满了，需要换一个新的容量为limit的盒子
+     * 2. 内层while循环不停地削减盒子的容量，如果某次装不下了就换盒子，也就是更新结果的时候
+     * 3. 当内外层的循环都是遍历一个数组，那么只需要一个i就可以了，在内层循环控制i的增长更加可靠，要不然需要处理复杂的i--问题
+     **/
+    function f(weights, capcity) {
+      let days = 0;
+
+      //   不需要i++
+      for (let i = 0; i < weights.length; ) {
+        let surplus = capcity;
+        while (surplus > 0) {
+          if (weights[i] > surplus) {
+            // 原本这里超出了break,如果外层还有一个继续i++，那么下一轮进来就把当前这一堆货物直接跳过了
+            break;
+          } else {
+            surplus -= weights[i];
+            // 只在内层控制
+            i++;
+          }
+        }
+
+        days++;
+      }
+
+      return days;
+    }
+
+    const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    days = 5;
+    console.log(shipWithinDays(weights, days));
+  </script>
+</html>

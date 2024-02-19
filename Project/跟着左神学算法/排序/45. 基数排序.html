@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+        1. 给你一个整数数字，如何确定这个数字有几位？
+        2. 给你一个包含负数的数组，如何格式化为正数？这样做的好处是什么？
+        3. 给一个正数数字，如何取出每一位上的数字，比如个十百千位分别是多少？
+        4. 基数排序首先每一轮记录下每一轮比如个位数字出现的次数
+        5. 然后基于次数建立一个前缀数量数组，然后进行分区
+        6. 最后在根据分区从 原数组中依次拿到数子基于当前这一位进行排序
+        问：在排序数组中，小于等于6的总共有5个，我这个6应该放在那里？那必须是5-1也就是第4位上啊
+        7. 每一轮都会基于个位排好序，下一轮基于十位排好序，十位相等的个位保持前后顺序稳定
+    */
+
+      /**
+       * @param {number[]} nums
+       * @return {number[]}
+       */
+      let BASE_RADIX = 10;
+      /* 基数排序 基于进制来排序 */
+      var sortArray = function (arr) {
+        // 先获取最大值和最小值 最小值用于进行格式化
+        let min = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+          min = Math.min(arr[i], min);
+        }
+
+        // 最大值用于确定比较的轮数
+        let max = 0;
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] -= min;
+          max = Math.max(arr[i], max);
+        }
+
+        // 计算这个最大值数字在 BASE_RADIX进制下有几位
+        let bits = 0;
+        while (max > 0) {
+          bits++;
+          max = Math.floor(max / BASE_RADIX);
+        }
+
+        radixSort(arr, arr.length, bits);
+
+        // 最后再刷新回去
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] += min;
+        }
+
+        return arr;
+      };
+
+      function radixSort(arr, n, bits) {
+        let offset = 1;
+        let help = [];
+        for (j = 0; j < bits; j++, offset *= BASE_RADIX) {
+          // 从低位到高位依次进
+          // 先拿到最低位的数字 先计数
+          let buckets = new Array(BASE_RADIX).fill(0);
+
+          for (let i = 0; i < n; i++) {
+            // 取出当前数组中数字的每一位的值 个位  十位  百位 依次类推
+            // 初始化为全部0 这边就很好计数
+            buckets[Math.floor(arr[i] / offset) % BASE_RADIX]++;
+          }
+
+          // 构建前缀次数累加的形式
+          // 比5小的的有几个
+          // 比6小的的有几个
+          for (let i = 1; i < buckets.length; i++) {
+            buckets[i] = buckets[i] + buckets[i - 1];
+          }
+
+          //   然后在进行前缀数分区
+          for (let i = n - 1; i >= 0; i--) {
+            help[--buckets[Math.floor(arr[i] / offset) % BASE_RADIX]] = arr[i];
+          }
+
+          for (let i = 0; i < n; i++) {
+            arr[i] = help[i];
+          }
+        }
+      }
+
+      sortArray([12, 15, 26, 458, -2, 96]);
+    </script>
+  </body>
+</html>

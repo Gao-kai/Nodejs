@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+牢记两点：
+1. 如果要倒入到out栈中，必须此时out栈是空的
+2. 如果要倒，那么必须把in栈中的一次倒完，不能倒一半
+*/
+      var MyQueue = function () {
+        this.inStack = [];
+        this.outStack = [];
+      };
+
+      /**
+       * @param {number} x
+       * @return {void}
+       */
+      MyQueue.prototype.push = function (x) {
+        this.inStack.push(x);
+      };
+
+      MyQueue.prototype.pushToTop = function () {
+        // 如果out为空 需要将所有in中的导入到out中
+        if (this.outStack.length == 0) {
+          // 必须全部导入out
+          while (this.inStack.length !== 0) {
+            let v = this.inStack.pop();
+            this.outStack.push(v);
+          }
+        }
+      };
+
+      /**
+       * @return {number}
+       */
+      MyQueue.prototype.pop = function () {
+        this.pushToTop();
+        // 然后弹出out栈中的第一个
+        return this.outStack.pop();
+      };
+
+      /**
+       * @return {number}
+       */
+      MyQueue.prototype.peek = function () {
+        this.pushToTop();
+        return this.outStack[this.outStack.length - 1];
+      };
+
+      /**
+       * @return {boolean}
+       */
+      MyQueue.prototype.empty = function () {
+        return this.outStack.length == 0 && this.inStack.length == 0;
+      };
+
+      let myQueue = new MyQueue();
+      myQueue.push(1); // queue is: [1]
+      myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+      myQueue.peek(); // return 1
+      myQueue.pop(); // return 1, queue is [2]
+      myQueue.empty(); // return false
+    </script>
+  </body>
+</html>

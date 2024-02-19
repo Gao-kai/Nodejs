@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Heap {
+        constructor(compareFn) {
+          /* 默认大顶堆 第一个参数是父节点的值 第二个参数是子节点的值  */
+          const defaultCompareFn = (a, b) => b - a;
+          /* 
+            如果返回值=0 那么不变
+            如果返回值>0 那么说明b的优先级高
+            如果返回值<0 那么说明a的优先级高
+        */
+          this.compare = compareFn || defaultCompareFn;
+          this.quene = [];
+        }
+
+        /* 加入元素 */
+        push(val) {
+          this.quene.push(val);
+          let currIndex = this.size() - 1; // 1
+          let parentIndex = Math.floor((currIndex - 1) >> 1); // 0
+
+          /* 这里的逻辑得恒定 让比较器来控制就可以了 */
+          while (
+            parentIndex >= 0 &&
+            this.compare(this.quene[parentIndex], this.quene[currIndex]) > 0
+          ) {
+            swap(this.quene, parentIndex, currIndex);
+            currIndex = parentIndex;
+            parentIndex = Math.floor((currIndex - 1) >> 1);
+          }
+        }
+
+        /* 队列顶部移除元素并返回值 */
+        poll() {
+          if (this.size() == 0) return;
+          const top = this.quene[0];
+          // 先交换
+          swap(this.quene, 0, this.size() - 1);
+          // 然后尾部弹出
+          this.quene.pop();
+
+          // 维护堆结构的稳定性heapify
+          let currIndex = 0;
+          let leftIndex = 2 * currIndex + 1;
+          while (leftIndex < this.size()) {
+            let rightIndex = 2 * currIndex + 2;
+            // 大顶堆 寻找左右两侧最大的 小顶堆 寻找左右两侧最小的儿子
+            let best =
+              rightIndex < this.size() &&
+              this.compare(this.quene[leftIndex], this.quene[rightIndex]) > 0
+                ? rightIndex
+                : leftIndex;
+            best =
+              this.compare(this.quene[currIndex], this.quene[best]) > 0
+                ? best
+                : currIndex;
+            if (currIndex == best) break;
+            swap(this.quene, currIndex, best);
+            currIndex = best;
+            leftIndex = 2 * currIndex + 1;
+          }
+
+          return top;
+        }
+
+        size() {
+          return this.quene.length;
+        }
+      }
+
+      /* 求前k个高频元素 */
+      function topKFrequent(nums, k) {
+        const map = new Map();
+
+        for (const num of nums) {
+          map.set(num, (map.get(num) || 0) + 1);
+        }
+
+        // 权重越小派越前面
+        const maxHeap = new Heap((a, b) => b[1] - a[1]);
+
+        for (const entry of map.entries()) {
+          maxHeap.push(entry);
+        }
+
+        let ans = [];
+        for (let i = 0; i < k; i++) {
+          const top = maxHeap.poll();
+          ans.push(top[0]);
+        }
+
+        return ans;
+      }
+
+      function swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+    </script>
+  </body>
+</html>

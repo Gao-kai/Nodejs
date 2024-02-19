@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number[]} nums
+       * @param {number} k
+       * @return {number}
+       */
+      var smallestDistancePair = function (nums, k) {
+        let left = 0;
+        let min = Math.min(...nums);
+        let max = Math.max(...nums);
+        let right = Math.abs(max - min);
+        nums.sort((a, b) => a - b);
+        let ans = -1;
+        let mid = 0;
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          const res = f(nums, mid);
+          // 当值为mid的时候都找到了大于k对的对数，对于差值来说这个值太小了，需要加大
+          if (res >= k) {
+            ans = mid;
+            right = mid - 1;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      };
+
+      /* 双指针技巧查找所有有序数组中任意两个数的差值小于等于limit的数组对  */
+      function f(nums, limit) {
+        let count = 0;
+        for (let l = 0, r = 0; l < nums.length; l++) {
+          while (r + 1 < nums.length && nums[r + 1] - nums[l] <= limit) {
+            r++;
+          }
+
+          count += r - l;
+        }
+
+        return count;
+      }
+
+      //   console.log(smallestDistancePair([1,3,1],1));
+      console.log(smallestDistancePair([62, 100, 4], 2));
+    </script>
+  </body>
+</html>

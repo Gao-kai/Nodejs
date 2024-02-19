@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {TreeNode} root
+       * @return {number}
+       */
+
+      var minDepth = function (root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) {
+          return 1;
+        }
+        let leftDepth = Number.MAX_SAFE_INTEGER;
+        let rightDepth = Number.MAX_SAFE_INTEGER;
+
+        // 如果root.left这里还是计算进去 那么假设left是null 得到就是0 right得到是2
+        // 0最后在计算的时候取最小值取到的就是0 但是题目要求只有到达叶子节点就停止计算 所以这里合格答案应该是2
+        // 那么该如何实现了？答案就是当某一边是null的时候 默认给最大值进行取min 最后取到的就不是0而是另外一边大于0的数字
+        if (root.left !== null) {
+          leftDepth = minDepth(root.left);
+        }
+
+        if (root.right !== null) {
+          rightDepth = minDepth(root.right);
+        }
+
+        return Math.min(leftDepth, rightDepth) + 1;
+      };
+    </script>
+  </body>
+</html>

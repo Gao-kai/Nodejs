@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="./image-7.png" alt="" />
+    <script>
+      // 每天可以生产的糖果
+      const arr = [5, 10, 1, 2, 3];
+      // 订单是10包
+      const a = 10;
+      // 每一包最少5个
+      const b = 5;
+      // 我不管你给我的是什么类型的糖果，只要你在最快的时间内给我生产出来即可：
+      function minDay(arr, a, b) {
+        // 最小也得1天 也就是假设某一个糖果一天可以生产50包
+        let left = 1;
+        // 最大就是 a*b / min
+        let right = Math.min(...arr) * a * b;
+
+        let mid = 0;
+        let ans = -1;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          // 问：假设生产mid天，能不能满足订单？
+          if (f(arr, mid, a, b)) {
+            // 减少天数 更新ans
+            right = mid - 1;
+            ans = mid;
+          } else {
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      }
+
+      function f(arr, day, a, b) {
+        // 计算当进行到第day天 所有生产的糖果是否可以满足需求
+        let total = 0;
+        let prodcut = 0;
+        for (let i = 0; i < arr.length; i++) {
+          prodcut += arr[i] * day;
+          // 第i号糖果够一包了
+          total += Math.floor(prodcut / b);
+
+          if (total >= a) {
+            return true;
+          } else {
+            prodcut = 0;
+          }
+        }
+
+        return false;
+      }
+
+      console.log(minDay(arr, a, b));
+    </script>
+  </body>
+</html>

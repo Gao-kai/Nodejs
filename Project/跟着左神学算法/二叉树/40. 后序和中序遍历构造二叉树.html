@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val, left, right) {
+       *     this.val = (val===undefined ? 0 : val)
+       *     this.left = (left===undefined ? null : left)
+       *     this.right = (right===undefined ? null : right)
+       * }
+       */
+      /**
+       * @param {number[]} inorder
+       * @param {number[]} postorder
+       * @return {TreeNode}
+       */
+      var buildTree = function (inorder, postorder) {
+        let map = new Map();
+        for (let i = 0; i < inorder.length; i++) {
+          map.set(inorder[i], i);
+        }
+        let n = postorder.length;
+        let root = build(inorder, 0, n - 1, postorder, 0, n - 1, map);
+        return root;
+      };
+
+      function build(inorder, l1, r1, postorder, l2, r2, map) {
+        // base case
+        if (l1 > r1) {
+          return null;
+        }
+        let root = new TreeNode(postorder[r2]);
+
+        if (l1 == r1) {
+          return root;
+        }
+
+        let find = map.get(postorder[r2]);
+        root.left = build(
+          inorder,
+          l1,
+          find - 1,
+          postorder,
+          l2,
+          l2 + (find - l1 - 1),
+          map
+        );
+        root.right = build(
+          inorder,
+          find + 1,
+          r1,
+          postorder,
+          l2 + (find - l1),
+          r2 - 1,
+          map
+        );
+
+        return root;
+      }
+    </script>
+  </body>
+</html>

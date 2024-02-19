@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @param {number} m
+       * @param {number} n
+       * @param {number} k
+       * @return {number}
+       */
+      var findKthNumber = function (m, n, k) {
+        let left = 1;
+        let right = m * n;
+        let mid = 0;
+        let ans = -1;
+
+        while (left <= right) {
+          mid = left + ((right - left) >> 1);
+          //   mid的值越大，比mid小的数字就越多
+          if (f(m, n, mid) >= k) {
+            // 值得变小
+            right = mid - 1;
+            ans = mid;
+          } else {
+            // 得到的数字比k此时可以继续求解值
+            left = mid + 1;
+          }
+        }
+
+        return ans;
+      };
+
+      /* 3*3矩阵 有几个值比value还小 */
+      function f(row, column, value) {
+        let sum = 0;
+        // 先计算一定小于value的值 不就是 n * (value / n)个吗
+        // 计算这个值在第几行
+        const currRow = Math.floor(value / column);
+        sum += currRow * column;
+
+        // 剩余的漏网之鱼只能是在自己当前行的下一行 并且在自己的前一列才可能 乘法表性质决定
+        for (let i = currRow + 1; i <= row; i++) {
+          sum += Math.floor(value / i);
+        }
+
+        return sum;
+      }
+
+      console.log(findKthNumber(3, 3, 5));
+      console.log(findKthNumber(2, 3, 6));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // 打包的目标语法是最新的ES语法
+    "module": "ESNext", // 打包的模块方式是ES module 因为后面打包要用rollup 不支持commonjs
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "jsx": "preserve", // 在ts中jsx语法不进行解析 因为vue有自己的jsx解析规则 不需要你tsc来解析
+    "skipLibCheck": true, // 跳过诸如lodash等类库的ts检测
+    "declaration": true, // 打包时生成声明文件
+    "forceConsistentCasingInFileNames": true, // 强制区分大小写
+    "strict": false
+  }
+}

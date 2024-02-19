@@ -1,0 +1,242 @@
+.editor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 12px;
+
+  &-left {
+    width: 270px;
+    height: 100%;
+    background: saddlebrown;
+    border-radius: 10px;
+    padding: 10px;
+
+    .editor-preview {
+      width: 250px;
+      min-height: 120px;
+      background-color: rgb(192, 255, 234);
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+      cursor: move;
+
+      &-label {
+        position: absolute;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 16px;
+        background-color: seagreen;
+        left: 0;
+        top: 0;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  &-right {
+    width: 270px;
+    height: 100%;
+    background: sandybrown;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  &-container {
+    flex: 1;
+    width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    row-gap: 10px;
+
+    &-top {
+      height: 120px;
+      border-radius: 10px;
+      background: pink;
+      display: flex;
+      align-items: center;
+      column-gap: 12px;
+      .menu-button {
+        background: saddlebrown;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        color: #fff;
+        border-radius: 15px;
+        &:hover {
+          color: #247cce;
+          background-color: azure;
+        }
+      }
+    }
+
+    &-canvas {
+      // flex: 1;
+      // height: 0;
+      position: relative;
+      background: pink;
+      border-radius: 10px;
+
+      .editor-block {
+        position: absolute;
+        user-select: none;
+        cursor: pointer;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        &__seleted {
+          &::after {
+            border: 2px dashed #247cce;
+          }
+        }
+
+        &__preview {
+          &::after {
+            display: none;
+          }
+        }
+      }
+
+      // 移动纵轴的
+      .line-x {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-left: 1px dashed red;
+      }
+
+      // 移动横轴的
+      .line-y {
+        position: absolute;
+        left: 0;
+        right: 0;
+        border-top: 1px dashed red;
+      }
+    }
+  }
+}
+
+.dropdown {
+  position: absolute;
+  width: 120px;
+  background: skyblue;
+  text-align: center;
+  border-radius: 5px;
+  display: none;
+
+  &-item {
+    cursor: pointer;
+    user-select: none;
+    line-height: 40px;
+
+    &:hover {
+      background: rgb(43, 18, 189);
+      color: #fff;
+    }
+  }
+}
+
+.dropdown-show {
+  display: block;
+}
+
+.el-button {
+  transition: none;
+}
+
+.range-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 10px;
+
+  > input {
+    width: 100px;
+  }
+}
+
+.el-select {
+  width: 240px;
+}
+
+.block-resize {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #e49114;
+}
+
+.block-resize-left {
+  top: 50%;
+  left: -4px;
+  transform: translateY(-50%);
+}
+
+.block-resize-right {
+  top: 50%;
+  right: -4px;
+  transform: translateY(-50%);
+}
+
+.block-resize-top {
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.block-resize-bottom {
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.block-resize-top-left {
+  top: -4px;
+  left: -4px;
+}
+
+.block-resize-top-right {
+  top: -4px;
+  right: -4px;
+}
+
+.block-resize-bottom-left {
+  bottom: -4px;
+  left: -4px;
+}
+
+.block-resize-bottom-right {
+  bottom: -4px;
+  right: -4px;
+}
