@@ -1,0 +1,5 @@
+node_modules
+/src/cache
+/src/gzip
+/src/数据格式
+/public

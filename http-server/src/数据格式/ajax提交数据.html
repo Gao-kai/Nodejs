@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=\, initial-scale=1.0" />
+    <title>Ajax</title>
+  </head>
+  <body>
+    <div id="form">
+      <input type="text" name="username" />
+      <input type="text" name="password" />
+      <button id="btn">点击提交</button>
+    </div>
+
+    <script>
+      const btn = document.querySelector("#btn");
+      btn.addEventListener("click", (e) => {
+        /****
+         * xhr四部曲
+         * 1. 创建xhr对象
+         * 2. 开启请求
+         * 3. 发送请求
+         * 4. 监听状态变化
+         *
+         */
+        const xhr = new XMLHttpRequest();
+        // 请求方法 地址 以及时候异步
+        xhr.open("post", "http://localhost:3000/ajax", { async: true });
+        // 设置请求头
+        xhr.setRequestHeader('Content-Type','application/json')
+        // 浏览器自动将字符串转化为json
+        xhr.responseType = 'json'
+        // 发送请求携带请求体
+        xhr.send(
+          JSON.stringify({
+            name: "lilei",
+            age: 18,
+          })
+        );
+        // 等同于xhr.readyState===4 && xhr.status == 200
+        xhr.onload = function () {
+          console.log(xhr.response);
+        };
+      });
+    </script>
+  </body>
+</html>

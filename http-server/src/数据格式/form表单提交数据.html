@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据表单提交</title>
+</head>
+<body>
+    <form action="http://localhost:3000/login" enctype="application/x-www-form-urlencoded" method="post">
+        <input type="text" name="username"/>
+        <input type="text" name="password"/>
+        <button>提交1</button>
+    </form>
+
+
+    <form action="http://localhost:3000/login" enctype="multipart/form-data" method="post">
+        <input type="text" name="iphone"/>
+        <input type="text" name="qq"/>
+        <button>提交2</button>
+    </form>
+
+
+    <form action="http://localhost:3000/login" enctype="text/plain" method="post">
+        <input type="text" name="wechat"/>
+        <input type="text" name="douyin"/>
+        <button>提交3</button>
+    </form>
+</body>
+</html>

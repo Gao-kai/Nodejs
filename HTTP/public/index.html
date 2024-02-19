@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页</title>
+</head>
+<body>
+    <!-- 
+        服务端路径尽量不要采用相对路径 而应该采用绝对路径
+        假设前端请求路径为：http://localhost:3000/public/index.html
+        后端解析之后拼接服务端文件路径为： C:\Users\克林辣舞\Desktop\NodeJS\HTTP\public\index.html
+        前端接收到index.html文件进行解析 然后加载./index.css 此时基础的请求路径是：http://localhost:3000/public/index.html
+        那么./index.css就代表当前基础请求路径同一目录下的index.css
+        此时是ok的 
+
+        但是假设前端一开始的基础请求路径是：http://localhost:3000/public/
+        后端解析拼接之后为：C:\Users\克林辣舞\Desktop\NodeJS\HTTP\public\index.html
+        前端再次请求./index.css 此时基础的请求路径是：http://localhost:3000/public/
+        那么./就意味着基础请求路径也就是和public在同一目录下的index.css 也就是 http://localhost:3000/index.css 此时访问就会报错
+
+        但是假设都写绝对路径：/pulic/index.css
+        此时无论前端的基础路径是什么 都代表去服务器服务运行目录的/public下的index.css
+        避免了歧义
+
+     -->
+    <link rel="stylesheet" href="/pulic/index.css">
+    <div>hahahhaa</div>
+   
+</body>
+</html>

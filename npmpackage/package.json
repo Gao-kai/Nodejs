@@ -1,0 +1,22 @@
+{
+  "name": "npmpackage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "computed": "./bin/computed.js"
+  },
+  "scripts": {
+    "mime": "mime",
+    "comp":"node ./bin/computed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mime": "^3.0.0"
+  },
+  "devDependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}

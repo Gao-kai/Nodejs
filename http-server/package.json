@@ -1,0 +1,27 @@
+{
+  "name": "gk-http-server",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "gk-http-server": "./bin/www.js",
+    "gk-start": "./bin/www.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "http",
+    "node",
+    "http-server"
+  ],
+  "author": "gaokai",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^10.0.1",
+    "debug": "^4.3.4",
+    "ejs": "^3.1.9",
+    "mime": "^3.0.0"
+  }
+}
